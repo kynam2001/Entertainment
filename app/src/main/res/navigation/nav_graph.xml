@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/startFragment">
+
+    <fragment
+        android:id="@+id/wallpaperFragment"
+        android:name="com.example.ringtuneandwallpaper.view.WallpaperFragment"
+        android:label="fragment_wallpaper"
+        tools:layout="@layout/fragment_wallpaper" />
+    <fragment
+        android:id="@+id/ringTuneFragment"
+        android:name="com.example.ringtuneandwallpaper.view.RingTuneFragment"
+        android:label="fragment_ring_tune"
+        tools:layout="@layout/fragment_ring_tune" />
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.example.ringtuneandwallpaper.view.StartFragment"
+        android:label="StartFragment" >
+        <action
+            android:id="@+id/action_startFragment_to_ringTuneFragment"
+            app:destination="@id/ringTuneFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_wallpaperFragment"
+            app:destination="@id/wallpaperFragment" />
+    </fragment>
+</navigation>
