@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("kotlin-kapt")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -52,4 +54,9 @@ dependencies {
     //navigation
     implementation ("androidx.navigation:navigation-fragment-ktx:2.8.0")
     implementation ("androidx.navigation:navigation-ui-ktx:2.8.0")
+    //glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    //exoplayer
+    implementation ("com.google.android.exoplayer:exoplayer:2.19.1")
+
 }

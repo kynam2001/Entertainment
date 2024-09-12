@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.example.ringtuneandwallpaper.adapter.RingtoneAdapter
 import com.example.ringtuneandwallpaper.data.Datasource
 import com.example.ringtuneandwallpaper.databinding.FragmentRingTuneBinding
@@ -26,7 +27,7 @@ class RingTuneFragment: Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val myDataset = Datasource().loadRingtone()
-        binding.recyclerViewRing.adapter = RingtoneAdapter(requireContext(), myDataset)
+        binding.recyclerViewRing.adapter = RingtoneAdapter(requireContext(), myDataset, findNavController())
         binding.recyclerViewRing.setHasFixedSize(true)
     }
 }

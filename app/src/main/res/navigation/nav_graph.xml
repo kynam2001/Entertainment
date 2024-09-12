@@ -14,7 +14,11 @@
         android:id="@+id/ringTuneFragment"
         android:name="com.example.ringtuneandwallpaper.view.RingTuneFragment"
         android:label="fragment_ring_tune"
-        tools:layout="@layout/fragment_ring_tune" />
+        tools:layout="@layout/fragment_ring_tune" >
+        <action
+            android:id="@+id/action_ringTuneFragment_to_playerMusicFragment"
+            app:destination="@id/playerMusicFragment" />
+    </fragment>
     <fragment
         android:id="@+id/startFragment"
         android:name="com.example.ringtuneandwallpaper.view.StartFragment"
@@ -25,5 +29,15 @@
         <action
             android:id="@+id/action_startFragment_to_wallpaperFragment"
             app:destination="@id/wallpaperFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playerMusicFragment"
+        android:name="com.example.ringtuneandwallpaper.view.PlayerMusicFragment"
+        android:label="fragment_player_music"
+        tools:layout="@layout/fragment_player_music" >
+        <argument
+            android:name="uri"
+            app:argType="integer"
+            android:defaultValue="0"/>
     </fragment>
 </navigation>

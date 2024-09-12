@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.model.Wallpaper
 
@@ -28,7 +29,10 @@ class WallpaperAdapter(
 
     override fun onBindViewHolder(holder: WallpaperViewHolder, position: Int) {
         val item = dataset[position]
-        holder.imageView.setImageResource(item.wallpaperResourceId)
+        Glide
+            .with(context)
+            .load(item.wallpaperResourceId)
+            .into(holder.imageView)
     }
 
 }
