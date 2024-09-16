@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_wallpaperFragment_to_startFragment"
             app:destination="@id/startFragment" />
+        <action
+            android:id="@+id/action_wallpaperFragment_to_fullscreenImageFragment"
+            app:destination="@id/fullscreenImageFragment" />
     </fragment>
     <fragment
         android:id="@+id/ringTuneFragment"
@@ -55,10 +58,50 @@
             android:name="uri"
             app:argType="integer"
             android:defaultValue="0"/>
+        <action
+            android:id="@+id/action_playerMusicFragment_to_ringTuneFragment"
+            app:destination="@id/ringTuneFragment" />
+        <action
+            android:id="@+id/action_playerMusicFragment_to_ringtoneDetailFragment"
+            app:destination="@id/ringtoneDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.example.ringtuneandwallpaper.view.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/fullscreenImageFragment"
+        android:name="com.example.ringtuneandwallpaper.view.FullscreenImageFragment"
+        android:label="fragment_fullscreen_image"
+        tools:layout="@layout/fragment_fullscreen_image" >
+        <argument
+            android:name="uri"
+            app:argType="integer"
+            android:defaultValue="0"/>
+        <action
+            android:id="@+id/action_fullscreenImageFragment_to_wallpaperFragment"
+            app:destination="@id/wallpaperFragment" />
+        <action
+            android:id="@+id/action_fullscreenImageFragment_to_wallpaperDetailFragment"
+            app:destination="@id/wallpaperDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ringtoneDetailFragment"
+        android:name="com.example.ringtuneandwallpaper.view.RingtoneDetailFragment"
+        android:label="fragment_ringtone_detail"
+        tools:layout="@layout/fragment_ringtone_detail" >
+        <action
+            android:id="@+id/action_ringtoneDetailFragment_to_playerMusicFragment"
+            app:destination="@id/playerMusicFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/wallpaperDetailFragment"
+        android:name="com.example.ringtuneandwallpaper.view.WallpaperDetailFragment"
+        android:label="fragment_wallpaper_detail"
+        tools:layout="@layout/fragment_wallpaper_detail" >
+        <action
+            android:id="@+id/action_wallpaperDetailFragment_to_fullscreenImageFragment"
+            app:destination="@id/fullscreenImageFragment" />
+    </fragment>
 </navigation>

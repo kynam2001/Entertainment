@@ -37,4 +37,9 @@ class RingTuneFragment: Fragment(){
         binding.recyclerViewRing.adapter = RingtoneAdapter(requireContext(), myDataset, findNavController())
         binding.recyclerViewRing.setHasFixedSize(true)
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.model.Wallpaper
+import com.example.ringtuneandwallpaper.view.WallpaperFragmentDirections
 
 class WallpaperAdapter(
     private val context: Context,
-    private val dataset: List<Wallpaper>
+    private val dataset: List<Wallpaper>,
+    private val navController: NavController
 ): RecyclerView.Adapter<WallpaperAdapter.WallpaperViewHolder>() {
     class WallpaperViewHolder(view: View): RecyclerView.ViewHolder(view){
         val imageView: ImageView = view.findViewById(R.id.wallpaperItem)
@@ -30,6 +33,10 @@ class WallpaperAdapter(
     override fun onBindViewHolder(holder: WallpaperViewHolder, position: Int) {
         val item = dataset[position]
         Glide.with(context).load(item.wallpaperResourceId).into(holder.imageView)
+        holder.imageView.setOnClickListener {
+            val action = WallpaperFragmentDirections.actionWallpaperFragmentToFullscreenImageFragment(item.wallpaperResourceId)
+            navController.navigate(action)
+        }
     }
 
 }

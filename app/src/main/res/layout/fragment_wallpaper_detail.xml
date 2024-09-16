@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DCC5C5"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.RingTuneFragment">
+    tools:context=".view.WallpaperDetailFragment"
+    android:orientation="vertical">
 
     <ImageButton
         android:id="@+id/back_button"
@@ -16,29 +16,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <TextView
+        android:id="@+id/imageName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ringtones"
+        android:paddingTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/back_button"/>
-    <ImageButton
-        android:id="@+id/setting_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="setting button"
-        android:src="@drawable/baseline_settings_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_ring"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/back_button"
-        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

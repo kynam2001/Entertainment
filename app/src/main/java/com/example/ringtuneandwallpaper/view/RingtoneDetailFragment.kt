@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.ringtuneandwallpaper.databinding.FragmentSettingBinding
+import com.example.ringtuneandwallpaper.R
+import com.example.ringtuneandwallpaper.databinding.FragmentPlayerMusicBinding
+import com.example.ringtuneandwallpaper.databinding.FragmentRingtoneDetailBinding
 
-class SettingFragment: Fragment(){
-    private var _binding: FragmentSettingBinding? = null
+class RingtoneDetailFragment: Fragment(){
+    private var _binding: FragmentRingtoneDetailBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -17,22 +19,15 @@ class SettingFragment: Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSettingBinding.inflate(inflater, container, false)
+        _binding = FragmentRingtoneDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.quitButton.setOnClickListener {
-            requireActivity().finish()
-        }
         binding.backButton.setOnClickListener {
-            findNavController().navigateUp()
+            findNavController().navigate(R.id.action_ringtoneDetailFragment_to_playerMusicFragment)
         }
-    }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

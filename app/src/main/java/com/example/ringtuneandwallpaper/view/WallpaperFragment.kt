@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.adapter.WallpaperAdapter
 import com.example.ringtuneandwallpaper.data.Datasource
@@ -34,8 +36,16 @@ class WallpaperFragment: Fragment(){
         binding.backButton.setOnClickListener {
             findNavController().navigate(R.id.action_wallpaperFragment_to_startFragment)
         }
-        binding.recyclerViewWall.adapter = WallpaperAdapter(requireContext(), myDataset)
-        binding.recyclerViewWall.setHasFixedSize(true)
+        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
+        binding.recyclerViewWallpaper.layoutManager = staggeredGridLayoutManager
+        binding.recyclerViewWallpaper.adapter = WallpaperAdapter(requireContext(), myDataset, findNavController())
+        binding.recyclerViewWallpaper.setHasFixedSize(true)
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

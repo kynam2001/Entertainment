@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.PlayerMusicFragment">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#889ADC"
+    tools:context=".view.FullscreenImageFragment">
 
     <ImageButton
         android:id="@+id/back_button"
@@ -15,7 +15,7 @@
         android:elevation="1dp"/>
 
     <TextView
-        android:id="@+id/ringtoneName"
+        android:id="@+id/imageName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
@@ -30,9 +30,11 @@
         android:layout_gravity="top|end"
         android:elevation="1dp"/>
 
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/playerView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:use_artwork="false"/>
+    <ImageView
+        android:id="@+id/fullscreen_imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="Wallpaper Image"
+        android:scaleType="fitCenter"/>
+
 </FrameLayout>
