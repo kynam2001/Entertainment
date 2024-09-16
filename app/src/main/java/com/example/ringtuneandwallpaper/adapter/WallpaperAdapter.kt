@@ -29,10 +29,7 @@ class WallpaperAdapter(
 
     override fun onBindViewHolder(holder: WallpaperViewHolder, position: Int) {
         val item = dataset[position]
-        Glide
-            .with(context)
-            .load(item.wallpaperResourceId)
-            .into(holder.imageView)
+        Glide.with(context).load(item.wallpaperResourceId).into(holder.imageView)
     }
 
 }

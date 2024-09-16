@@ -9,7 +9,14 @@
         android:id="@+id/wallpaperFragment"
         android:name="com.example.ringtuneandwallpaper.view.WallpaperFragment"
         android:label="fragment_wallpaper"
-        tools:layout="@layout/fragment_wallpaper" />
+        tools:layout="@layout/fragment_wallpaper" >
+        <action
+            android:id="@+id/action_wallpaperFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_wallpaperFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ringTuneFragment"
         android:name="com.example.ringtuneandwallpaper.view.RingTuneFragment"
@@ -18,6 +25,12 @@
         <action
             android:id="@+id/action_ringTuneFragment_to_playerMusicFragment"
             app:destination="@id/playerMusicFragment" />
+        <action
+            android:id="@+id/action_ringTuneFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_ringTuneFragment_to_startFragment"
+            app:destination="@id/startFragment" />
     </fragment>
     <fragment
         android:id="@+id/startFragment"
@@ -29,6 +42,9 @@
         <action
             android:id="@+id/action_startFragment_to_wallpaperFragment"
             app:destination="@id/wallpaperFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
     </fragment>
     <fragment
         android:id="@+id/playerMusicFragment"
@@ -40,4 +56,9 @@
             app:argType="integer"
             android:defaultValue="0"/>
     </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.ringtuneandwallpaper.view.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
 </navigation>

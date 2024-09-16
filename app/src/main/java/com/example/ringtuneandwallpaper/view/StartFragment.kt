@@ -31,5 +31,8 @@ class StartFragment: Fragment(){
         binding.wallpaperButton.setOnClickListener {
             findNavController().navigate(R.id.action_startFragment_to_wallpaperFragment)
         }
+        binding.settingButton.setOnClickListener {
+            findNavController().navigate(R.id.action_startFragment_to_settingFragment)
+        }
     }
 }
