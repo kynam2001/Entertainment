@@ -8,8 +8,8 @@
 
     <ImageButton
         android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:src="@drawable/baseline_arrow_back_24"
         android:contentDescription="back button"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,15 +17,15 @@
     <TextView
         android:id="@+id/imageName"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:paddingTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <ImageButton
         android:id="@+id/quit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:src="@drawable/baseline_power_settings_new_24"
         android:contentDescription="quit button"
         app:layout_constraintEnd_toEndOf="parent"
