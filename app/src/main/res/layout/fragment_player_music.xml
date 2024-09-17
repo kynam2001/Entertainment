@@ -18,7 +18,17 @@
         android:id="@+id/ringtoneName"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:paddingTop="8dp"
+        android:textSize="24sp"
+        android:padding="8dp"
+        android:text="Vigelos"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="0.05"
+        android:shadowColor="#555555"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"
         android:layout_gravity="top|center_horizontal"
         android:elevation="1dp"/>
 

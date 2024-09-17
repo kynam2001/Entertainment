@@ -18,7 +18,17 @@
         android:id="@+id/imageName"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:paddingTop="8dp"
+        android:textSize="24sp"
+        android:padding="8dp"
+        android:text="Vigelos"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="0.05"
+        android:shadowColor="#555555"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"
         android:layout_gravity="top|center_horizontal"
         android:elevation="1dp"/>
 
@@ -36,5 +46,13 @@
         android:layout_height="match_parent"
         android:contentDescription="Wallpaper Image"
         android:scaleType="fitCenter"/>
+
+    <ImageButton
+        android:id="@+id/favorite_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="favorite button"
+        android:src="@drawable/baseline_favorite_border_36"
+        android:layout_gravity="bottom|end" />
 
 </FrameLayout>

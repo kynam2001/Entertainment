@@ -16,7 +16,7 @@
 
     <Button
         android:id="@+id/ringtuneButton"
-        android:text="Ringtune"
+        android:text="Ringtone"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#DCC5C5"

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#B2AFD0"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.SettingFragment">
 
@@ -15,13 +16,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <TextView
-        android:id="@+id/imageName"
+        android:id="@+id/header_title"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:paddingTop="8dp"
+        android:text="Setting"
+        android:textSize="24sp"
+        android:padding="8dp"
+        android:textColor="#FFFFFF"
+        android:textStyle="italic|bold"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:letterSpacing="0.05"
+        android:shadowColor="#555555"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
     <ImageButton
         android:id="@+id/quit_button"
         android:layout_width="48dp"
@@ -30,17 +43,78 @@
         android:contentDescription="quit button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <!-- Divider -->
+    <View
+        android:id="@+id/dividerVersion"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#4B4B4B"
+        app:layout_constraintTop_toBottomOf="@id/header_title"/>
+    <!-- Version Text -->
     <TextView
-        android:id="@+id/version_textView"
+        android:id="@+id/version_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Version:"
+        android:padding="16dp"
+        android:text="Version: 1.0.0"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/dividerVersion"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/back_button"/>
-    <TextView
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Divider -->
+    <View
+        android:id="@+id/dividerWifiDownload"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/version_text"/>
+
+    <!-- Switch for Download Only on WiFi -->
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_wifi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Download only on WiFi"
+        android:padding="16dp"
+        android:textColor="#000000"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/dividerWifiDownload"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/version_textView"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Divider -->
+    <View
+        android:id="@+id/dividerFavoriteDownload"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/switch_wifi"/>
+
+    <!-- Switch for Add Downloaded Songs to Favorites -->
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_favorite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add downloaded songs to Favorites"
+        android:padding="16dp"
+        android:textColor="#000000"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/dividerFavoriteDownload"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#4B4B4B"
+        app:layout_constraintTop_toBottomOf="@id/switch_favorite"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

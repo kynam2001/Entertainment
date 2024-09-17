@@ -17,7 +17,8 @@ class RingtoneAdapter(
     private val navController: NavController
 ): RecyclerView.Adapter<RingtoneAdapter.RingtoneViewHolder>() {
     class RingtoneViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        val textView: TextView = view.findViewById(R.id.ringtoneName)
+        val ringtoneNameView: TextView = view.findViewById(R.id.ringtoneName)
+        val ringtoneTimeView: TextView = view.findViewById(R.id.ringtoneTime)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RingtoneViewHolder {
@@ -32,8 +33,9 @@ class RingtoneAdapter(
 
     override fun onBindViewHolder(holder: RingtoneViewHolder, position: Int) {
         val item = dataset[position]
-        holder.textView.text = context.resources.getString(item.ringtoneResourceId)
-        holder.textView.setOnClickListener {
+        holder.ringtoneNameView.text = context.resources.getString(item.ringtoneResourceId)
+        holder.ringtoneTimeView.text = "3:50"
+        holder.ringtoneNameView.setOnClickListener {
             val action = RingTuneFragmentDirections.actionRingTuneFragmentToPlayerMusicFragment(item.ringtoneResourceId)
             navController.navigate(action)
         }

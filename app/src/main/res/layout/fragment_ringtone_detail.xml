@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DCC5C5"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.RingtoneDetailFragment"
     android:orientation="vertical">
@@ -20,9 +21,171 @@
         android:id="@+id/imageName"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:paddingTop="8dp"
+        android:textSize="24sp"
+        android:padding="8dp"
+        android:text="Vigelos"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="0.05"
+        android:shadowColor="#555555"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- Divider for Author -->
+    <View
+        android:id="@+id/divider_author"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#4B4B4B"
+        app:layout_constraintTop_toBottomOf="@id/imageName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Author TextView -->
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Author: John Doe"
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/divider_author"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Divider for Duration -->
+    <View
+        android:id="@+id/divider_duration"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/author"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Duration TextView -->
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Duration: 3:45"
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/divider_duration"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Divider for Size -->
+    <View
+        android:id="@+id/divider_size"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/duration"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Size TextView -->
+    <TextView
+        android:id="@+id/size"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Size: 4.5 MB"
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/divider_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Divider for Genre -->
+    <View
+        android:id="@+id/divider_genre"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Genre TextView -->
+    <TextView
+        android:id="@+id/genre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Genre: Pop"
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/divider_genre"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Divider for Set Ringtone Button -->
+    <View
+        android:id="@+id/divider_set_ringtone"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#4B4B4B"
+        app:layout_constraintTop_toBottomOf="@id/genre"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Set Ringtone Button -->
+    <Button
+        android:id="@+id/set_ringtone_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Set Ringtone from This Song"
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/divider_set_ringtone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Divider for Set Default Ringtone Button -->
+    <View
+        android:id="@+id/divider_set_default_ringtone"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/set_ringtone_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Set Default Ringtone Button -->
+    <Button
+        android:id="@+id/set_default_ringtone_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Set Default Ringtone"
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/divider_set_default_ringtone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#4B4B4B"
+        app:layout_constraintTop_toBottomOf="@id/set_default_ringtone_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

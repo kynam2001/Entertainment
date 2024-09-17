@@ -17,12 +17,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <TextView
+        android:id="@+id/header_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wallpapers"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="italic|bold"
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="0.05"
+        android:shadowColor="#555555"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"
+        android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/back_button"/>
+
     <ImageButton
         android:id="@+id/setting_button"
         android:layout_width="48dp"
@@ -37,29 +49,63 @@
         android:id="@+id/recycler_view_wallpaper"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/back_button"
+        app:layout_constraintTop_toBottomOf="@id/header_title"
         app:layout_constraintBottom_toTopOf="@id/image_tab"/>
     <ImageButton
         android:id="@+id/image_tab"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="@drawable/baseline_image_36"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/favorite_tab"
         app:layout_constraintBottom_toBottomOf="parent" />
     <ImageButton
         android:id="@+id/favorite_tab"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="@drawable/baseline_favorite_36"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/image_tab"
+        app:layout_constraintEnd_toStartOf="@id/download_tab"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <ImageButton
         android:id="@+id/download_tab"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@drawable/baseline_download_24"
+        android:src="@drawable/baseline_download_36"
+        app:layout_constraintStart_toEndOf="@id/favorite_tab"
+        app:layout_constraintEnd_toStartOf="@id/search_tab"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <ImageButton
+        android:id="@+id/search_tab"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/baseline_search_36"
+        app:layout_constraintStart_toEndOf="@id/download_tab"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        android:padding="16dp"
+        android:layout_margin="16dp"/>
+    <View
+        android:id="@+id/dim_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#66000000"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

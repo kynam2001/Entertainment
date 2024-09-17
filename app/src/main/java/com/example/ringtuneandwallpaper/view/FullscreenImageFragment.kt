@@ -15,6 +15,7 @@ class FullscreenImageFragment: Fragment(){
 
     private var _binding: FragmentFullscreenImageBinding? = null
     private val binding get() = _binding!!
+    private var favorite = false
 
     private val args: FullscreenImageFragmentArgs by navArgs()
 
@@ -35,6 +36,9 @@ class FullscreenImageFragment: Fragment(){
         binding.detailButton.setOnClickListener {
             findNavController().navigate(R.id.action_fullscreenImageFragment_to_wallpaperDetailFragment)
         }
+        binding.favoriteButton.setOnClickListener {
+            setFavorite()
+        }
         val uri = args.uri
         Glide.with(this).load(uri).into(binding.fullscreenImageView)
     }
@@ -42,5 +46,16 @@ class FullscreenImageFragment: Fragment(){
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun setFavorite(){
+        if(!favorite) {
+            binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_36)
+            favorite = true
+        }
+        else{
+            binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_border_36)
+            favorite = false
+        }
     }
 }

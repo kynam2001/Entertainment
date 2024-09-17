@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#889ADC"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.WallpaperDetailFragment"
     android:orientation="vertical">
@@ -15,13 +16,168 @@
         android:src="@drawable/baseline_arrow_back_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/imageName"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:paddingTop="8dp"
+        android:textSize="24sp"
+        android:padding="8dp"
+        android:text="Vigelos"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="0.05"
+        android:shadowColor="#555555"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- Divider for Size -->
+    <View
+        android:id="@+id/divider_size"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#4B4B4B"
+        app:layout_constraintTop_toBottomOf="@id/imageName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Size TextView -->
+    <TextView
+        android:id="@+id/size"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Size: 1920x1080"
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/divider_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Divider for Location -->
+    <View
+        android:id="@+id/divider_location"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Location TextView -->
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Location: Paris"
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/divider_location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Divider for Author -->
+    <View
+        android:id="@+id/divider_author"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Author TextView -->
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Author: Jane Doe"
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/divider_author"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Divider for Description -->
+    <View
+        android:id="@+id/divider_description"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/author"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Description TextView -->
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Description: A beautiful sunset over Paris."
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/divider_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Divider for Set Wallpaper Button -->
+    <View
+        android:id="@+id/divider_set_wallpaper"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#4B4B4B"
+        app:layout_constraintTop_toBottomOf="@id/description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Set Wallpaper Button -->
+    <Button
+        android:id="@+id/set_wallpaper_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Set image as Wallpaper"
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/divider_set_wallpaper"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Divider for Set Default Wallpaper Button -->
+    <View
+        android:id="@+id/divider_set_default_wallpaper"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/set_wallpaper_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Set Default Wallpaper Button -->
+    <Button
+        android:id="@+id/set_default_wallpaper_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Set Default Wallpaper"
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/divider_set_default_wallpaper"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

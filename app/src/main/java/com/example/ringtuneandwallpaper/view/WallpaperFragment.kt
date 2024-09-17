@@ -1,10 +1,12 @@
 package com.example.ringtuneandwallpaper.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -36,6 +38,9 @@ class WallpaperFragment: Fragment(){
         binding.backButton.setOnClickListener {
             findNavController().navigate(R.id.action_wallpaperFragment_to_startFragment)
         }
+        binding.searchTab.setOnClickListener {
+            searchWallpaper()
+        }
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
         binding.recyclerViewWallpaper.layoutManager = staggeredGridLayoutManager
@@ -44,8 +49,47 @@ class WallpaperFragment: Fragment(){
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        closeSearchView()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        closeSearchView()
         _binding = null
+    }
+
+    private fun searchWallpaper() {
+        openSearchView()
+        binding.dimBackground.setOnClickListener {
+            closeSearchView()
+        }
+        binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Log.e("Vigelos", query.toString())
+                closeSearchView()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+        })
+    }
+
+    private fun openSearchView() {
+        binding.searchView.visibility = View.VISIBLE
+        binding.searchView.isIconified = false
+        binding.searchView.requestFocus()
+        binding.dimBackground.visibility = View.VISIBLE
+    }
+
+    fun closeSearchView() {
+        binding.searchView.isIconified = true
+        binding.searchView.clearFocus()
+        binding.searchView.visibility = View.GONE
+        binding.dimBackground.visibility = View.GONE
     }
 }
