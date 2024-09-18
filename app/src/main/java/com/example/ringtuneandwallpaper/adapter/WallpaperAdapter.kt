@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.model.Wallpaper
 import com.example.ringtuneandwallpaper.view.WallpaperFragmentDirections
+import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
 
 class WallpaperAdapter(
     private val context: Context,
@@ -31,10 +32,9 @@ class WallpaperAdapter(
     }
 
     override fun onBindViewHolder(holder: WallpaperViewHolder, position: Int) {
-        val item = dataset[position]
-        Glide.with(context).load(item.wallpaperResourceId).into(holder.imageView)
+        Glide.with(context).load(dataset[position].url).into(holder.imageView)
         holder.imageView.setOnClickListener {
-            val action = WallpaperFragmentDirections.actionWallpaperFragmentToFullscreenImageFragment(item.wallpaperResourceId)
+            val action = WallpaperFragmentDirections.actionWallpaperFragmentToFullscreenImageFragment(position)
             navController.navigate(action)
         }
     }

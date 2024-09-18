@@ -1,17 +1,28 @@
 package com.example.ringtuneandwallpaper.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.databinding.FragmentFullscreenImageBinding
+import com.example.ringtuneandwallpaper.model.ApiService
+import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class FullscreenImageFragment: Fragment(){
+
+    private lateinit var viewModel: ShareViewModel
 
     private var _binding: FragmentFullscreenImageBinding? = null
     private val binding get() = _binding!!
@@ -25,22 +36,26 @@ class FullscreenImageFragment: Fragment(){
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFullscreenImageBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(requireActivity())[ShareViewModel::class.java]
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val position = args.position
         binding.backButton.setOnClickListener {
             findNavController().navigate(R.id.action_fullscreenImageFragment_to_wallpaperFragment)
         }
         binding.detailButton.setOnClickListener {
-            findNavController().navigate(R.id.action_fullscreenImageFragment_to_wallpaperDetailFragment)
+            val action = FullscreenImageFragmentDirections.actionFullscreenImageFragmentToWallpaperDetailFragment(position)
+            findNavController().navigate(action)
         }
         binding.favoriteButton.setOnClickListener {
             setFavorite()
         }
-        val uri = args.uri
-        Glide.with(this).load(uri).into(binding.fullscreenImageView)
+        binding.imageName.text = viewModel.wallpaperList.value!![position].name
+        Glide.with(this).load(viewModel.wallpaperList.value!![position].url).into(binding.fullscreenImageView)
+
     }
 
     override fun onDestroyView() {

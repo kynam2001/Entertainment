@@ -32,11 +32,10 @@ class RingtoneAdapter(
     }
 
     override fun onBindViewHolder(holder: RingtoneViewHolder, position: Int) {
-        val item = dataset[position]
-        holder.ringtoneNameView.text = context.resources.getString(item.ringtoneResourceId)
+        holder.ringtoneNameView.text = dataset[position].name
         holder.ringtoneTimeView.text = "3:50"
         holder.ringtoneNameView.setOnClickListener {
-            val action = RingTuneFragmentDirections.actionRingTuneFragmentToPlayerMusicFragment(item.ringtoneResourceId)
+            val action = RingTuneFragmentDirections.actionRingTuneFragmentToPlayerMusicFragment(position)
             navController.navigate(action)
         }
     }

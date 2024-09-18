@@ -7,14 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.adapter.RingtoneAdapter
-import com.example.ringtuneandwallpaper.data.Datasource
 import com.example.ringtuneandwallpaper.databinding.FragmentRingTuneBinding
+import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
 
 class RingTuneFragment: Fragment(){
 
+    private lateinit var viewModel: ShareViewModel
     private var _binding: FragmentRingTuneBinding? = null
     private val binding get() = _binding!!
 
@@ -24,12 +26,13 @@ class RingTuneFragment: Fragment(){
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRingTuneBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(requireActivity()).get(ShareViewModel::class.java)
+        viewModel.fetchRingtones()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val myDataset = Datasource().loadRingtone()
         binding.settingButton.setOnClickListener {
             findNavController().navigate(R.id.action_ringTuneFragment_to_settingFragment)
         }
@@ -39,8 +42,10 @@ class RingTuneFragment: Fragment(){
         binding.searchTab.setOnClickListener {
             searchRingtone()
         }
-        binding.recyclerViewRing.adapter = RingtoneAdapter(requireContext(), myDataset, findNavController())
-        binding.recyclerViewRing.setHasFixedSize(true)
+        viewModel.ringtoneList.observe(viewLifecycleOwner) {
+            binding.recyclerViewRingtone.adapter = RingtoneAdapter(requireContext(), viewModel.ringtoneList.value!!, findNavController())
+        }
+        binding.recyclerViewRingtone.setHasFixedSize(true)
     }
 
     override fun onPause() {

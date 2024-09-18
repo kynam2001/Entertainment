@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.core.view.doOnDetach
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.databinding.FragmentPlayerMusicBinding
+import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -21,6 +23,8 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.RawResourceDataSource
 
 class PlayerMusicFragment: Fragment() {
+
+    private lateinit var viewModel: ShareViewModel
 
     private var _binding: FragmentPlayerMusicBinding? = null
     private val binding get() = _binding!!
@@ -37,23 +41,25 @@ class PlayerMusicFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlayerMusicBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(requireActivity()).get(ShareViewModel::class.java)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val position = args.position
         binding.backButton.setOnClickListener {
             findNavController().navigate(R.id.action_playerMusicFragment_to_ringTuneFragment)
         }
         binding.detailButton.setOnClickListener {
-            findNavController().navigate(R.id.action_playerMusicFragment_to_ringtoneDetailFragment)
+            val action = PlayerMusicFragmentDirections.actionPlayerMusicFragmentToRingtoneDetailFragment(position)
+            findNavController().navigate(action)
         }
         binding.favoriteButton.setOnClickListener {
             setFavorite()
         }
-        val _uri = args.uri
-        val uri = RawResourceDataSource.buildRawResourceUri(_uri)
-        val mediaItem = MediaItem.fromUri(uri)
+        binding.ringtoneName.text = viewModel.ringtoneList.value!![position].name
+        val mediaItem = MediaItem.fromUri(viewModel.ringtoneList.value!![position].url)
         player = ExoPlayer.Builder(requireContext()).build()
         player.setMediaItem(mediaItem)
         player.prepare()

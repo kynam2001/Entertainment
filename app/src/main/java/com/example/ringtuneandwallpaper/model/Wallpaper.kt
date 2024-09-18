@@ -1,3 +1,3 @@
 package com.example.ringtuneandwallpaper.model
 
-data class Wallpaper(val wallpaperResourceId: Int)
+data class Wallpaper(val name: String, val url: String)

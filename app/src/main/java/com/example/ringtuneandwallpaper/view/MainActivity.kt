@@ -28,22 +28,5 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://66ea528655ad32cda4785c45.mockapi.io/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val apiService = retrofit.create(ApiService::class.java)
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                val songs = apiService.getSongs()
-                val images = apiService.getImages()
-                Log.e("Vigelos", songs[0].url)
-                Log.e("Vigelos", images.toString())
-            } catch (e: Exception) {
-                // Handle error
-            }
-        }
-
-
     }
 }

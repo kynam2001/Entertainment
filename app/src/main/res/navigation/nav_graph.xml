@@ -55,7 +55,7 @@
         android:label="fragment_player_music"
         tools:layout="@layout/fragment_player_music" >
         <argument
-            android:name="uri"
+            android:name="position"
             app:argType="integer"
             android:defaultValue="0"/>
         <action
@@ -76,7 +76,7 @@
         android:label="fragment_fullscreen_image"
         tools:layout="@layout/fragment_fullscreen_image" >
         <argument
-            android:name="uri"
+            android:name="position"
             app:argType="integer"
             android:defaultValue="0"/>
         <action
@@ -94,6 +94,10 @@
         <action
             android:id="@+id/action_ringtoneDetailFragment_to_playerMusicFragment"
             app:destination="@id/playerMusicFragment" />
+        <argument
+            android:name="position"
+            app:argType="integer"
+            android:defaultValue="0"/>
     </fragment>
     <fragment
         android:id="@+id/wallpaperDetailFragment"
@@ -103,5 +107,9 @@
         <action
             android:id="@+id/action_wallpaperDetailFragment_to_fullscreenImageFragment"
             app:destination="@id/fullscreenImageFragment" />
+        <argument
+            android:name="position"
+            app:argType="integer"
+            android:defaultValue="0"/>
     </fragment>
 </navigation>
