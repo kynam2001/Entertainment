@@ -48,7 +48,7 @@ class FullscreenImageFragment: Fragment(){
         _binding = null
     }
 
-    fun setFavorite(){
+    private fun setFavorite(){
         if(!favorite) {
             binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_36)
             favorite = true
