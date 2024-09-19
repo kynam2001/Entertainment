@@ -18,9 +18,6 @@ import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.RawResourceDataSource
 
 class PlayerMusicFragment: Fragment() {
 
@@ -34,6 +31,19 @@ class PlayerMusicFragment: Fragment() {
     private val handler = Handler(Looper.getMainLooper())
 
     private var favorite = false
+
+    private val updateSeekBarRunnable = object : Runnable {
+        override fun run() {
+            if(player.isPlaying){
+                // Lấy thời gian phát hiện tại và cập nhật SeekBar
+                val currentPosition = player.currentPosition.toInt()
+                binding.seekBar.progress = currentPosition
+
+                // Cập nhật SeekBar mỗi 100ms (0.1 giây)
+                handler.postDelayed(this, 100)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,16 +74,16 @@ class PlayerMusicFragment: Fragment() {
         player.setMediaItem(mediaItem)
         player.prepare()
         player.play()
-        updateSeekBar()
+        configureSeekBar()
         binding.playPauseButton.setOnClickListener {
             if (player.isPlaying) {
                 player.pause()
                 binding.playPauseButton.setImageResource(R.drawable.baseline_play_arrow_60)
-                binding.seekBar.removeCallbacks(null)
+                handler.removeCallbacks(updateSeekBarRunnable)
             } else {
                 player.play()
                 binding.playPauseButton.setImageResource(R.drawable.baseline_pause_60)
-                updateSeekBar()
+                handler.post(updateSeekBarRunnable)
             }
         }
 
@@ -82,7 +92,7 @@ class PlayerMusicFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         player.release()
-        binding.seekBar.removeCallbacks(null)
+        handler.removeCallbacks(updateSeekBarRunnable)
         _binding = null
     }
 
@@ -97,19 +107,7 @@ class PlayerMusicFragment: Fragment() {
         }
     }
 
-    fun updateSeekBar(){
-        val updateSeekBarRunnable = object : Runnable {
-            override fun run() {
-                if (player.isPlaying) {
-                    // Lấy thời gian phát hiện tại và cập nhật SeekBar
-                    val currentPosition = player.currentPosition.toInt()
-                    binding.seekBar.progress = currentPosition
-
-                    // Cập nhật SeekBar mỗi 1000ms (1 giây)
-                    handler.postDelayed(this, 1000)
-                }
-            }
-        }
+    private fun configureSeekBar(){
         player.addListener(object: Player.Listener{
             override fun onPlaybackStateChanged(playbackState: Int) {
                 when(playbackState){
@@ -126,7 +124,7 @@ class PlayerMusicFragment: Fragment() {
             }
         })
         binding.seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
                     player.seekTo(progress.toLong())
                 }
@@ -142,7 +140,7 @@ class PlayerMusicFragment: Fragment() {
 
         })
         binding.seekBar.doOnDetach {
-            binding.seekBar.removeCallbacks(updateSeekBarRunnable)
+            handler.removeCallbacks(updateSeekBarRunnable)
         }
     }
 }
