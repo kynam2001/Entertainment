@@ -64,7 +64,7 @@
         android:id="@+id/favorite_tab"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@drawable/baseline_favorite_36"
+        android:src="@drawable/baseline_favorite_blue_36"
         app:layout_constraintStart_toEndOf="@id/image_tab"
         app:layout_constraintEnd_toStartOf="@id/download_tab"
         app:layout_constraintBottom_toBottomOf="parent"/>

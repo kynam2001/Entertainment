@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -45,11 +46,22 @@ class WallpaperFragment: Fragment(){
         binding.searchTab.setOnClickListener {
             searchWallpaper()
         }
+        binding.imageTab.setOnClickListener {
+            binding.recyclerViewWallpaper.adapter = WallpaperAdapter(
+                requireContext(),
+                null,
+                viewModel.wallpaperList.value!!,
+                findNavController())
+        }
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
         binding.recyclerViewWallpaper.layoutManager = staggeredGridLayoutManager
         viewModel.wallpaperList.observe(viewLifecycleOwner) {
-            binding.recyclerViewWallpaper.adapter = WallpaperAdapter(requireContext(), viewModel.wallpaperList.value!!, findNavController())
+            binding.recyclerViewWallpaper.adapter = WallpaperAdapter(
+                requireContext(),
+                null,
+                viewModel.wallpaperList.value!!,
+                findNavController())
         }
         binding.recyclerViewWallpaper.setHasFixedSize(true)
 
@@ -73,7 +85,16 @@ class WallpaperFragment: Fragment(){
         }
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.e("Vigelos", query.toString())
+                if(viewModel.wallpaperList.value!!.any { wallpaper -> wallpaper.name == query }){
+                    binding.recyclerViewWallpaper.adapter = WallpaperAdapter(
+                        requireContext(),
+                        viewModel,
+                        viewModel.wallpaperList.value!!.filter { wallpaper -> wallpaper.name == query },
+                        findNavController())
+                }
+                else{
+                    Toast.makeText(requireContext(),"No wallpaper found", Toast.LENGTH_SHORT).show()
+                }
                 closeSearchView()
                 return true
             }

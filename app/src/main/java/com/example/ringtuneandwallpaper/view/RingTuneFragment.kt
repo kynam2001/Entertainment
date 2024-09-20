@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -42,8 +43,18 @@ class RingTuneFragment: Fragment(){
         binding.searchTab.setOnClickListener {
             searchRingtone()
         }
+        binding.ringtoneTab.setOnClickListener {
+            binding.recyclerViewRingtone.adapter = RingtoneAdapter(
+                null,
+                viewModel.ringtoneList.value!!,
+                findNavController())
+        }
         viewModel.ringtoneList.observe(viewLifecycleOwner) {
-            binding.recyclerViewRingtone.adapter = RingtoneAdapter(requireContext(), viewModel.ringtoneList.value!!, findNavController())
+            binding.recyclerViewRingtone.adapter = RingtoneAdapter(
+                null,
+                viewModel.ringtoneList.value!!,
+                findNavController()
+            )
         }
         binding.recyclerViewRingtone.setHasFixedSize(true)
     }
@@ -59,14 +70,23 @@ class RingTuneFragment: Fragment(){
         _binding = null
     }
 
-    fun searchRingtone(){
+    private fun searchRingtone(){
         openSearchView()
         binding.dimBackground.setOnClickListener {
             closeSearchView()
         }
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.e("Vigelos", query.toString())
+                if(viewModel.ringtoneList.value!!.any { ringtone -> ringtone.name == query }) {
+                    binding.recyclerViewRingtone.adapter = RingtoneAdapter(
+                        viewModel,
+                        viewModel.ringtoneList.value!!.filter { ringtone -> ringtone.name == query },
+                        findNavController()
+                    )
+                }
+                else{
+                    Toast.makeText(requireContext(),"No ringtone found", Toast.LENGTH_SHORT).show()
+                }
                 closeSearchView()
                 return true
             }
