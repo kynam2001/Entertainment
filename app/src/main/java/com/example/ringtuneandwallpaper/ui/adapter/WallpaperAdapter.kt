@@ -1,20 +1,16 @@
-package com.example.ringtuneandwallpaper.adapter
+package com.example.ringtuneandwallpaper.ui.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.annotation.Nullable
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.model.Wallpaper
-import com.example.ringtuneandwallpaper.view.WallpaperFragment
-import com.example.ringtuneandwallpaper.view.WallpaperFragmentDirections
+import com.example.ringtuneandwallpaper.ui.view.WallpaperFragmentDirections
 import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
 
 class WallpaperAdapter(
@@ -48,5 +44,4 @@ class WallpaperAdapter(
             navController.navigate(action)
         }
     }
-
 }

@@ -1,7 +1,6 @@
-package com.example.ringtuneandwallpaper.view
+package com.example.ringtuneandwallpaper.ui.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,14 +10,14 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.ringtuneandwallpaper.R
-import com.example.ringtuneandwallpaper.adapter.RingtoneAdapter
-import com.example.ringtuneandwallpaper.databinding.FragmentRingTuneBinding
+import com.example.ringtuneandwallpaper.ui.adapter.RingtoneAdapter
+import com.example.ringtuneandwallpaper.databinding.FragmentRingToneBinding
 import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
 
-class RingTuneFragment: Fragment(){
+class RingToneFragment: Fragment(){
 
     private lateinit var viewModel: ShareViewModel
-    private var _binding: FragmentRingTuneBinding? = null
+    private var _binding: FragmentRingToneBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -26,9 +25,7 @@ class RingTuneFragment: Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRingTuneBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity()).get(ShareViewModel::class.java)
-        viewModel.fetchRingtones()
+        _binding = FragmentRingToneBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -57,6 +54,8 @@ class RingTuneFragment: Fragment(){
             )
         }
         binding.recyclerViewRingtone.setHasFixedSize(true)
+        viewModel = ViewModelProvider(requireActivity())[ShareViewModel::class.java]
+        viewModel.fetchRingtones()
     }
 
     override fun onPause() {
@@ -103,7 +102,7 @@ class RingTuneFragment: Fragment(){
         binding.dimBackground.visibility = View.VISIBLE
     }
 
-    fun closeSearchView() {
+    private fun closeSearchView() {
         binding.searchView.isIconified = true
         binding.searchView.clearFocus()
         binding.searchView.visibility = View.GONE

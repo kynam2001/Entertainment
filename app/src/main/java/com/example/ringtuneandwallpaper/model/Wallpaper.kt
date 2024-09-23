@@ -1,3 +1,8 @@
 package com.example.ringtuneandwallpaper.model
 
-data class Wallpaper(val name: String, val url: String)
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "wallpapers")
+data class Wallpaper(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0, val name: String, val url: String)

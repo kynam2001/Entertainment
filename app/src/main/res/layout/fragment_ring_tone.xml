@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#DCC5C5"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.RingTuneFragment">
+    tools:context=".ui.view.RingToneFragment">
 
     <ImageButton
         android:id="@+id/back_button"

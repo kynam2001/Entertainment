@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/wallpaperFragment"
-        android:name="com.example.ringtuneandwallpaper.view.WallpaperFragment"
+        android:name="com.example.ringtuneandwallpaper.ui.view.WallpaperFragment"
         android:label="fragment_wallpaper"
         tools:layout="@layout/fragment_wallpaper" >
         <action
@@ -22,9 +22,9 @@
     </fragment>
     <fragment
         android:id="@+id/ringTuneFragment"
-        android:name="com.example.ringtuneandwallpaper.view.RingTuneFragment"
+        android:name="com.example.ringtuneandwallpaper.ui.view.RingToneFragment"
         android:label="fragment_ring_tune"
-        tools:layout="@layout/fragment_ring_tune" >
+        tools:layout="@layout/fragment_ring_tone" >
         <action
             android:id="@+id/action_ringTuneFragment_to_playerMusicFragment"
             app:destination="@id/playerMusicFragment" />
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.example.ringtuneandwallpaper.view.StartFragment"
+        android:name="com.example.ringtuneandwallpaper.ui.view.StartFragment"
         android:label="StartFragment" >
         <action
             android:id="@+id/action_startFragment_to_ringTuneFragment"
@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/playerMusicFragment"
-        android:name="com.example.ringtuneandwallpaper.view.PlayerMusicFragment"
+        android:name="com.example.ringtuneandwallpaper.ui.view.PlayerMusicFragment"
         android:label="fragment_player_music"
         tools:layout="@layout/fragment_player_music" >
         <argument
@@ -67,12 +67,12 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.ringtuneandwallpaper.view.SettingFragment"
+        android:name="com.example.ringtuneandwallpaper.ui.view.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
     <fragment
         android:id="@+id/fullscreenImageFragment"
-        android:name="com.example.ringtuneandwallpaper.view.FullscreenImageFragment"
+        android:name="com.example.ringtuneandwallpaper.ui.view.FullscreenImageFragment"
         android:label="fragment_fullscreen_image"
         tools:layout="@layout/fragment_fullscreen_image" >
         <argument
@@ -88,7 +88,7 @@
     </fragment>
     <fragment
         android:id="@+id/ringtoneDetailFragment"
-        android:name="com.example.ringtuneandwallpaper.view.RingtoneDetailFragment"
+        android:name="com.example.ringtuneandwallpaper.ui.view.RingtoneDetailFragment"
         android:label="fragment_ringtone_detail"
         tools:layout="@layout/fragment_ringtone_detail" >
         <action
@@ -101,7 +101,7 @@
     </fragment>
     <fragment
         android:id="@+id/wallpaperDetailFragment"
-        android:name="com.example.ringtuneandwallpaper.view.WallpaperDetailFragment"
+        android:name="com.example.ringtuneandwallpaper.ui.view.WallpaperDetailFragment"
         android:label="fragment_wallpaper_detail"
         tools:layout="@layout/fragment_wallpaper_detail" >
         <action

@@ -1,4 +1,4 @@
-package com.example.ringtuneandwallpaper.model
+package com.example.ringtuneandwallpaper.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

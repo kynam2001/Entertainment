@@ -1,4 +1,4 @@
-package com.example.ringtuneandwallpaper.adapter
+package com.example.ringtuneandwallpaper.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,7 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.model.Ringtone
-import com.example.ringtuneandwallpaper.view.RingTuneFragmentDirections
+import com.example.ringtuneandwallpaper.ui.view.RingToneFragmentDirections
 import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
 
 class RingtoneAdapter(
@@ -40,7 +40,7 @@ class RingtoneAdapter(
             index = viewModel.ringtoneList.value!!.indexOf(dataset[position])
         }
         holder.ringtoneNameView.setOnClickListener {
-            val action = RingTuneFragmentDirections.actionRingTuneFragmentToPlayerMusicFragment(index)
+            val action = RingToneFragmentDirections.actionRingTuneFragmentToPlayerMusicFragment(index)
             navController.navigate(action)
         }
     }

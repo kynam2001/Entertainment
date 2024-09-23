@@ -1,22 +1,18 @@
-package com.example.ringtuneandwallpaper.view
+package com.example.ringtuneandwallpaper.ui.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.ringtuneandwallpaper.databinding.ActivityMainBinding
-import com.example.ringtuneandwallpaper.model.ApiService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.ringtuneandwallpaper.model.AppDatabase
+import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: ShareViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

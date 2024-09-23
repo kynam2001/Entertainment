@@ -1,4 +1,4 @@
-package com.example.ringtuneandwallpaper.view
+package com.example.ringtuneandwallpaper.ui.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,24 +10,24 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.databinding.FragmentPlayerMusicBinding
-import com.example.ringtuneandwallpaper.databinding.FragmentRingtoneDetailBinding
+import com.example.ringtuneandwallpaper.databinding.FragmentWallpaperDetailBinding
 import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
 
-class RingtoneDetailFragment: Fragment(){
+class WallpaperDetailFragment: Fragment(){
 
     private lateinit var viewModel: ShareViewModel
 
-    private var _binding: FragmentRingtoneDetailBinding? = null
+    private var _binding: FragmentWallpaperDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val args: RingtoneDetailFragmentArgs by navArgs()
+    private val args: WallpaperDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRingtoneDetailBinding.inflate(inflater, container, false)
+        _binding = FragmentWallpaperDetailBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[ShareViewModel::class.java]
         return binding.root
     }
@@ -36,9 +36,9 @@ class RingtoneDetailFragment: Fragment(){
         super.onViewCreated(view, savedInstanceState)
         val position = args.position
         binding.backButton.setOnClickListener {
-            val action = RingtoneDetailFragmentDirections.actionRingtoneDetailFragmentToPlayerMusicFragment(position)
+            val action = WallpaperDetailFragmentDirections.actionWallpaperDetailFragmentToFullscreenImageFragment(position)
             findNavController().navigate(action)
         }
-        binding.ringtoneName.text = viewModel.ringtoneList.value!![position].name
+        binding.imageName.text = viewModel.wallpaperList.value!![position].name
     }
 }

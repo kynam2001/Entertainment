@@ -1,4 +1,4 @@
-package com.example.ringtuneandwallpaper.view
+package com.example.ringtuneandwallpaper.ui.view
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
@@ -191,11 +191,13 @@ class PlayerMusicFragment: Fragment() {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                binding.playPauseButton.performClick()
                 rotationAnimator.pause()
                 handler.removeCallbacks(updateSeekBarRunnable)
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                binding.playPauseButton.performClick()
                 rotationAnimator.resume()
                 handler.post(updateSeekBarRunnable)
             }

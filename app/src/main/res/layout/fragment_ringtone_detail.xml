@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#DCC5C5"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.RingtoneDetailFragment"
+    tools:context=".ui.view.RingtoneDetailFragment"
     android:orientation="vertical">
 
     <ImageButton

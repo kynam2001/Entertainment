@@ -1,4 +1,4 @@
-package com.example.ringtuneandwallpaper.view
+package com.example.ringtuneandwallpaper.ui.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle

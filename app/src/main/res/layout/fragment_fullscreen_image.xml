@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#889ADC"
-    tools:context=".view.FullscreenImageFragment">
+    tools:context=".ui.view.FullscreenImageFragment">
 
     <ImageButton
         android:id="@+id/back_button"

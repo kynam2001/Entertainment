@@ -1,5 +1,7 @@
-package com.example.ringtuneandwallpaper.model
+package com.example.ringtuneandwallpaper.network
 
+import com.example.ringtuneandwallpaper.model.Ringtone
+import com.example.ringtuneandwallpaper.model.Wallpaper
 import retrofit2.http.GET
 
 interface ApiService {

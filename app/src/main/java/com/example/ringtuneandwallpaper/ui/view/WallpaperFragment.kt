@@ -1,7 +1,6 @@
-package com.example.ringtuneandwallpaper.view
+package com.example.ringtuneandwallpaper.ui.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.ringtuneandwallpaper.R
-import com.example.ringtuneandwallpaper.adapter.WallpaperAdapter
+import com.example.ringtuneandwallpaper.ui.adapter.WallpaperAdapter
 import com.example.ringtuneandwallpaper.databinding.FragmentWallpaperBinding
 import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
 
