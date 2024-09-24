@@ -1,29 +1,50 @@
 package com.example.ringtuneandwallpaper.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.ringtuneandwallpaper.model.AppDatabase
+import com.example.ringtuneandwallpaper.dao.RingtoneDataAccessObject
+import com.example.ringtuneandwallpaper.model.WallpaperDatabase
 import com.example.ringtuneandwallpaper.repository.Repository
-import com.example.ringtuneandwallpaper.model.Ringtone
-import com.example.ringtuneandwallpaper.model.Wallpaper
 import com.example.ringtuneandwallpaper.dao.WallpaperDataAccessObject
+import com.example.ringtuneandwallpaper.model.RingtoneApi
+import com.example.ringtuneandwallpaper.model.RingtoneDatabase
+import com.example.ringtuneandwallpaper.model.RingtoneEntity
+import com.example.ringtuneandwallpaper.model.WallpaperApi
+import com.example.ringtuneandwallpaper.model.WallpaperEntity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class ShareViewModel(application: Application): AndroidViewModel(application) {
     private val repository = Repository()
-    private val wallpaperDataAccessObject: WallpaperDataAccessObject = AppDatabase.getDatabase(application.applicationContext).wallpaperDao()
-    val ringtoneList = MutableLiveData<List<Ringtone>>()
-    var wallpaperList = MutableLiveData<List<Wallpaper>>()
+    private val ringtoneDataAccessObject: RingtoneDataAccessObject = RingtoneDatabase.getDatabase(application.applicationContext).ringtoneDao()
+    private val wallpaperDataAccessObject: WallpaperDataAccessObject = WallpaperDatabase.getDatabase(application.applicationContext).wallpaperDao()
+    val ringtoneList = MutableLiveData<List<RingtoneEntity>>()
+    var wallpaperList = MutableLiveData<List<WallpaperEntity>>()
     private val isLoading = MutableLiveData<Boolean>()
+
+    private fun RingtoneApi.toEntity(): RingtoneEntity {
+        return RingtoneEntity(
+            name = name,
+            url = url,
+            isFavorite = false
+        )
+    }
+
     fun fetchRingtones() {
         viewModelScope.launch {
             isLoading.value = true
             try {
-                ringtoneList.value = repository.getRingtones()
+                val existingRingtones = ringtoneDataAccessObject.getAllRingtones().first() // Lấy dữ liệu hiện có
+                if (existingRingtones.isEmpty()) { // Nếu không có dữ liệu, gọi API
+                    val newRingtones = repository.getRingtones()
+                    ringtoneDataAccessObject.insertRingtone(newRingtones.map { it.toEntity() })
+                }
+                ringtoneDataAccessObject.getAllRingtones().collect{ list ->
+                    ringtoneList.postValue(list)
+                }
             }catch (e: Exception){
                 e.printStackTrace()
             }finally {
@@ -31,14 +52,23 @@ class ShareViewModel(application: Application): AndroidViewModel(application) {
             }
         }
     }
+
+    private fun WallpaperApi.toEntity(): WallpaperEntity {
+        return WallpaperEntity(
+            name = name,
+            url = url,
+            isFavorite = false
+        )
+    }
+
     fun fetchWallpapers(){
         viewModelScope.launch {
             isLoading.value = true
             try {
-                wallpaperDataAccessObject.deleteAllWallpapers()
-                val newWallpapers = repository.getWallpapers()
-                newWallpapers.forEach { wallpaper ->
-                    wallpaperDataAccessObject.insertWallpaper(wallpaper)
+                val existingWallpapers = wallpaperDataAccessObject.getAllWallpapers().first()
+                if(existingWallpapers.isEmpty()) {
+                    val newWallpapers = repository.getWallpapers()
+                    wallpaperDataAccessObject.insertWallpaper(newWallpapers.map { it.toEntity() })
                 }
                 wallpaperDataAccessObject.getAllWallpapers().collect{ list ->
                     wallpaperList.postValue(list)

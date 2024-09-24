@@ -1,5 +1,6 @@
 package com.example.ringtuneandwallpaper.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,13 +8,14 @@ import android.widget.TextView
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ringtuneandwallpaper.R
-import com.example.ringtuneandwallpaper.model.Ringtone
+import com.example.ringtuneandwallpaper.model.RingtoneApi
+import com.example.ringtuneandwallpaper.model.RingtoneEntity
 import com.example.ringtuneandwallpaper.ui.view.RingToneFragmentDirections
 import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
 
 class RingtoneAdapter(
     private val viewModel: ShareViewModel?,
-    private val dataset: List<Ringtone>,
+    private val dataset: List<RingtoneEntity>,
     private val navController: NavController
 ): RecyclerView.Adapter<RingtoneAdapter.RingtoneViewHolder>() {
     class RingtoneViewHolder(view: View) : RecyclerView.ViewHolder(view){
@@ -35,6 +37,7 @@ class RingtoneAdapter(
         holder.ringtoneNameView.text = dataset[position].name
         holder.ringtoneTimeView.text = "3:50"
         var index = position
+        Log.e("Vigelos", "onBindViewHolder: $index")
         // Favorite or search list
         if(viewModel?.ringtoneList?.value != null){
             index = viewModel.ringtoneList.value!!.indexOf(dataset[position])

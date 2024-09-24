@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.ringtuneandwallpaper.databinding.ActivityMainBinding
-import com.example.ringtuneandwallpaper.model.AppDatabase
 import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
 
 class MainActivity : AppCompatActivity() {

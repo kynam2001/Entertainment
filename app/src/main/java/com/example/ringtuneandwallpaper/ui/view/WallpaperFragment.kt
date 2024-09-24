@@ -29,13 +29,13 @@ class WallpaperFragment: Fragment(){
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentWallpaperBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[ShareViewModel::class.java]
-        viewModel.fetchWallpapers()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[ShareViewModel::class.java]
+        viewModel.fetchWallpapers()
         binding.settingButton.setOnClickListener {
             findNavController().navigate(R.id.action_wallpaperFragment_to_settingFragment)
         }
@@ -55,11 +55,11 @@ class WallpaperFragment: Fragment(){
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
         binding.recyclerViewWallpaper.layoutManager = staggeredGridLayoutManager
-        viewModel.wallpaperList.observe(viewLifecycleOwner) {
+        viewModel.wallpaperList.observe(viewLifecycleOwner) { wallpaperList ->
             binding.recyclerViewWallpaper.adapter = WallpaperAdapter(
                 requireContext(),
                 null,
-                viewModel.wallpaperList.value!!,
+                wallpaperList,
                 findNavController())
         }
         binding.recyclerViewWallpaper.setHasFixedSize(true)

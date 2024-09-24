@@ -6,18 +6,18 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.ringtuneandwallpaper.dao.WallpaperDataAccessObject
 
-@Database(entities = [Wallpaper::class], version = 1)
-abstract class AppDatabase: RoomDatabase()  {
+@Database(entities = [WallpaperEntity::class], version = 1, exportSchema = false)
+abstract class WallpaperDatabase: RoomDatabase()  {
     abstract fun wallpaperDao(): WallpaperDataAccessObject
 
     companion object{
-        @Volatile private var INSTANCE: AppDatabase? = null
+        @Volatile private var INSTANCE: WallpaperDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase{
+        fun getDatabase(context: Context): WallpaperDatabase{
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    AppDatabase::class.java,
+                    WallpaperDatabase::class.java,
                     "wallpapers"
                 ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance

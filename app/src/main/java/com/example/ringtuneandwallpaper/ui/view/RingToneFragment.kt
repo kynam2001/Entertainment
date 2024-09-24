@@ -1,6 +1,7 @@
 package com.example.ringtuneandwallpaper.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,8 @@ class RingToneFragment: Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[ShareViewModel::class.java]
+        viewModel.fetchRingtones()
         binding.settingButton.setOnClickListener {
             findNavController().navigate(R.id.action_ringTuneFragment_to_settingFragment)
         }
@@ -46,16 +49,14 @@ class RingToneFragment: Fragment(){
                 viewModel.ringtoneList.value!!,
                 findNavController())
         }
-        viewModel.ringtoneList.observe(viewLifecycleOwner) {
+        viewModel.ringtoneList.observe(viewLifecycleOwner) { ringtoneList ->
             binding.recyclerViewRingtone.adapter = RingtoneAdapter(
                 null,
-                viewModel.ringtoneList.value!!,
+                ringtoneList,
                 findNavController()
             )
         }
         binding.recyclerViewRingtone.setHasFixedSize(true)
-        viewModel = ViewModelProvider(requireActivity())[ShareViewModel::class.java]
-        viewModel.fetchRingtones()
     }
 
     override fun onPause() {

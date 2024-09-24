@@ -66,7 +66,7 @@ class PlayerMusicFragment: Fragment() {
         configureView()
         configureExoplayer()
         configureSeekBar()
-        loadUIRefPosition(position)
+        loadUIRefPosition()
     }
 
     private fun configureExoplayer(){
@@ -130,8 +130,16 @@ class PlayerMusicFragment: Fragment() {
         rotationAnimator.start()
     }
 
-    private fun loadUIRefPosition(position: Int){
+    private fun loadUIRefPosition(){
         binding.ringtoneName.text = viewModel.ringtoneList.value!![position].name
+        if(viewModel.ringtoneList.value!![position].isFavorite){
+            binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_36)
+            favorite = true
+        }
+        else{
+            binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_border_36)
+            favorite = false
+        }
         binding.detailButton.setOnClickListener {
             val action = PlayerMusicFragmentDirections.actionPlayerMusicFragmentToRingtoneDetailFragment(position)
             findNavController().navigate(action)
@@ -140,10 +148,12 @@ class PlayerMusicFragment: Fragment() {
 
     private fun setFavorite(){
         if(!favorite) {
+            viewModel.ringtoneList.value!![position].isFavorite = true
             binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_36)
             favorite = true
         }
         else{
+            viewModel.ringtoneList.value!![position].isFavorite = false
             binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_border_36)
             favorite = false
         }
@@ -178,7 +188,7 @@ class PlayerMusicFragment: Fragment() {
                 if(position != player.currentMediaItemIndex){
                     position = player.currentMediaItemIndex
                 }
-                loadUIRefPosition(position)
+                loadUIRefPosition()
                 rotationAnimator.cancel()
                 rotationAnimator.start()
             }

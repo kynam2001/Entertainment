@@ -3,27 +3,28 @@ package com.example.ringtuneandwallpaper.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.ringtuneandwallpaper.model.Wallpaper
+import com.example.ringtuneandwallpaper.model.WallpaperEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WallpaperDataAccessObject {
     @Query("SELECT * FROM wallpapers")
-    fun getAllWallpapers(): Flow<List<Wallpaper>>
+    fun getAllWallpapers(): Flow<List<WallpaperEntity>>
 
     @Query("DELETE FROM wallpapers")
     suspend fun deleteAllWallpapers()
 
-    @Insert
-    suspend fun insertWallpaper(wallpaper: Wallpaper)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWallpaper(wallpaper: List<WallpaperEntity>)
 
     @Update
-    suspend fun updateWallpaper(wallpaper: Wallpaper)
+    suspend fun updateWallpaper(wallpaper: WallpaperEntity)
 
     @Delete
-    suspend fun deleteWallpaper(wallpaper: Wallpaper)
+    suspend fun deleteWallpaper(wallpaper: WallpaperEntity)
 
 
 }
