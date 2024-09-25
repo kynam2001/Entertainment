@@ -58,6 +58,9 @@
             android:name="position"
             app:argType="integer"
             android:defaultValue="0"/>
+        <argument
+            android:name="listRing"
+            app:argType="com.example.ringtuneandwallpaper.model.RingtoneEntity[]"/>
         <action
             android:id="@+id/action_playerMusicFragment_to_ringTuneFragment"
             app:destination="@id/ringTuneFragment" />
@@ -79,6 +82,9 @@
             android:name="position"
             app:argType="integer"
             android:defaultValue="0"/>
+        <argument
+            android:name="listWall"
+            app:argType="com.example.ringtuneandwallpaper.model.WallpaperEntity[]"/>
         <action
             android:id="@+id/action_fullscreenImageFragment_to_wallpaperFragment"
             app:destination="@id/wallpaperFragment" />
@@ -98,6 +104,9 @@
             android:name="position"
             app:argType="integer"
             android:defaultValue="0"/>
+        <argument
+            android:name="listRing"
+            app:argType="com.example.ringtuneandwallpaper.model.RingtoneEntity[]"/>
     </fragment>
     <fragment
         android:id="@+id/wallpaperDetailFragment"
@@ -111,5 +120,8 @@
             android:name="position"
             app:argType="integer"
             android:defaultValue="0"/>
+        <argument
+            android:name="listWall"
+            app:argType="com.example.ringtuneandwallpaper.model.WallpaperEntity[]"/>
     </fragment>
 </navigation>

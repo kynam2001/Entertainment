@@ -16,7 +16,7 @@ import com.example.ringtuneandwallpaper.repository.Repository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class ShareViewModel(application: Application): AndroidViewModel(application) {
+class MyViewModel(application: Application): AndroidViewModel(application) {
     private val repository = Repository()
     val ringtoneDataAccessObject: RingtoneDataAccessObject = RingtoneDatabase.getDatabase(application.applicationContext).ringtoneDao()
     val wallpaperDataAccessObject: WallpaperDataAccessObject = WallpaperDatabase.getDatabase(application.applicationContext).wallpaperDao()

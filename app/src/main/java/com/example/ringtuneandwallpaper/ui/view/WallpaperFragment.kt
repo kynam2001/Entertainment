@@ -14,11 +14,11 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.ui.adapter.WallpaperAdapter
 import com.example.ringtuneandwallpaper.databinding.FragmentWallpaperBinding
-import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
+import com.example.ringtuneandwallpaper.viewmodel.MyViewModel
 
 class WallpaperFragment: Fragment(){
 
-    private lateinit var viewModel: ShareViewModel
+    private lateinit var viewModel: MyViewModel
 
     private var _binding: FragmentWallpaperBinding? = null
     private val binding get() = _binding!!
@@ -34,7 +34,7 @@ class WallpaperFragment: Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[ShareViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[MyViewModel::class.java]
         viewModel.fetchWallpapers()
         binding.settingButton.setOnClickListener {
             findNavController().navigate(R.id.action_wallpaperFragment_to_settingFragment)
@@ -45,7 +45,6 @@ class WallpaperFragment: Fragment(){
         binding.imageTab.setOnClickListener {
             binding.recyclerViewWallpaper.adapter = WallpaperAdapter(
                 requireContext(),
-                null,
                 viewModel.wallpaperList.value!!,
                 findNavController()
             )
@@ -53,7 +52,6 @@ class WallpaperFragment: Fragment(){
         binding.favoriteTab.setOnClickListener {
             binding.recyclerViewWallpaper.adapter = WallpaperAdapter(
                 requireContext(),
-                viewModel,
                 viewModel.wallpaperList.value!!.filter { wallpaper -> wallpaper.isFavorite },
                 findNavController()
             )
@@ -67,7 +65,6 @@ class WallpaperFragment: Fragment(){
         viewModel.wallpaperList.observe(viewLifecycleOwner) { wallpaperList ->
             binding.recyclerViewWallpaper.adapter = WallpaperAdapter(
                 requireContext(),
-                null,
                 wallpaperList,
                 findNavController()
             )
@@ -97,7 +94,6 @@ class WallpaperFragment: Fragment(){
                 if(viewModel.wallpaperList.value!!.any { wallpaper -> wallpaper.name == query }){
                     binding.recyclerViewWallpaper.adapter = WallpaperAdapter(
                         requireContext(),
-                        viewModel,
                         viewModel.wallpaperList.value!!.filter { wallpaper -> wallpaper.name == query },
                         findNavController())
                 }

@@ -13,20 +13,22 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.databinding.FragmentFullscreenImageBinding
+import com.example.ringtuneandwallpaper.model.WallpaperEntity
 import com.example.ringtuneandwallpaper.utility.OnSwipeTouchListener
-import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
+import com.example.ringtuneandwallpaper.viewmodel.MyViewModel
 import kotlinx.coroutines.launch
 
 @SuppressLint("ClickableViewAccessibility")
 class FullscreenImageFragment: Fragment(){
 
-    private lateinit var viewModel: ShareViewModel
+    private lateinit var viewModel: MyViewModel
 
     private var _binding: FragmentFullscreenImageBinding? = null
     private val binding get() = _binding!!
 
     private val args: FullscreenImageFragmentArgs by navArgs()
     private var position = 0
+    private var listWall = listOf<WallpaperEntity>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,13 +36,14 @@ class FullscreenImageFragment: Fragment(){
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFullscreenImageBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[ShareViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[MyViewModel::class.java]
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         position = args.position
+        listWall = args.listWall.toList()
         configureView()
 
     }
@@ -51,13 +54,13 @@ class FullscreenImageFragment: Fragment(){
             findNavController().navigate(R.id.action_fullscreenImageFragment_to_wallpaperFragment)
         }
         binding.detailButton.setOnClickListener {
-            val action = FullscreenImageFragmentDirections.actionFullscreenImageFragmentToWallpaperDetailFragment(position)
+            val action = FullscreenImageFragmentDirections.actionFullscreenImageFragmentToWallpaperDetailFragment(listWall.toTypedArray(), position)
             findNavController().navigate(action)
         }
         binding.favoriteButton.setOnClickListener {
-            val wallpaperList = viewModel.wallpaperList.value!!
+            val wallpaperList = listWall
             wallpaperList[position].isFavorite = !wallpaperList[position].isFavorite
-            viewModel.wallpaperList.value = wallpaperList
+            listWall = wallpaperList
             setFavorite()
             lifecycleScope.launch {
                 viewModel.wallpaperDataAccessObject.updateWallpaper(wallpaperList[position])
@@ -65,7 +68,7 @@ class FullscreenImageFragment: Fragment(){
         }
         binding.fullscreenImageView.setOnTouchListener (object: OnSwipeTouchListener(requireContext()){
             override fun onSwipeLeft() {
-                if(position == viewModel.wallpaperList.value!!.size - 1){
+                if(position == listWall.size - 1){
                     position = 0
                 }
                 else {
@@ -76,7 +79,7 @@ class FullscreenImageFragment: Fragment(){
 
             override fun onSwipeRight() {
                 if(position == 0){
-                    position = viewModel.wallpaperList.value!!.size - 1
+                    position = listWall.size - 1
                 }
                 else{
                     position -= 1
@@ -87,13 +90,13 @@ class FullscreenImageFragment: Fragment(){
     }
 
     private fun loadUIRefPosition(){
-        binding.imageName.text = viewModel.wallpaperList.value!![position].name
+        binding.imageName.text = listWall[position].name
         setFavorite()
-        Glide.with(this).load(viewModel.wallpaperList.value!![position].url).into(binding.fullscreenImageView)
+        Glide.with(this).load(listWall[position].url).into(binding.fullscreenImageView)
     }
 
     private fun setFavorite(){
-        if(viewModel.wallpaperList.value!![position].isFavorite){
+        if(listWall[position].isFavorite){
             binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_36)
         }else{
             binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_border_36)

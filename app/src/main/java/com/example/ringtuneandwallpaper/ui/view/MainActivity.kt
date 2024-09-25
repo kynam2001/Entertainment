@@ -6,12 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.ringtuneandwallpaper.databinding.ActivityMainBinding
-import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
+import com.example.ringtuneandwallpaper.viewmodel.MyViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: ShareViewModel
+    private lateinit var viewModel: MyViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

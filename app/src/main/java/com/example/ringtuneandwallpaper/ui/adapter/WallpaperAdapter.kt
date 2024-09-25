@@ -9,14 +9,11 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ringtuneandwallpaper.R
-import com.example.ringtuneandwallpaper.model.WallpaperApi
 import com.example.ringtuneandwallpaper.model.WallpaperEntity
 import com.example.ringtuneandwallpaper.ui.view.WallpaperFragmentDirections
-import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
 
 class WallpaperAdapter(
     private val context: Context,
-    private val viewModel: ShareViewModel?,
     private val dataset: List<WallpaperEntity>,
     private val navController: NavController
 ): RecyclerView.Adapter<WallpaperAdapter.WallpaperViewHolder>() {
@@ -34,14 +31,9 @@ class WallpaperAdapter(
     }
 
     override fun onBindViewHolder(holder: WallpaperViewHolder, position: Int) {
-        var index = position
-        // Favorite or search list
-        if(viewModel?.wallpaperList?.value != null){
-            index = viewModel.wallpaperList.value!!.indexOf(dataset[position])
-        }
         Glide.with(context).load(dataset[position].url).into(holder.imageView)
         holder.imageView.setOnClickListener {
-            val action = WallpaperFragmentDirections.actionWallpaperFragmentToFullscreenImageFragment(index)
+            val action = WallpaperFragmentDirections.actionWallpaperFragmentToFullscreenImageFragment(dataset.toTypedArray(), position)
             navController.navigate(action)
         }
     }

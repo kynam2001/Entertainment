@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -69,6 +70,9 @@ dependencies {
     implementation ("androidx.room:room-ktx:2.6.1")
     //livedata
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
+    //hilt DI
+    implementation ("com.google.dagger:hilt-android:2.52")
+    ksp ("com.google.dagger:hilt-android-compiler:2.52")
 
 
 }

@@ -4,12 +4,10 @@ import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
-import androidx.core.view.doOnDetach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -17,7 +15,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.databinding.FragmentPlayerMusicBinding
-import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
+import com.example.ringtuneandwallpaper.model.RingtoneEntity
+import com.example.ringtuneandwallpaper.viewmodel.MyViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -28,7 +27,7 @@ import kotlinx.coroutines.launch
 
 class PlayerMusicFragment: Fragment() {
 
-    private lateinit var viewModel: ShareViewModel
+    private lateinit var viewModel: MyViewModel
 
     private var _binding: FragmentPlayerMusicBinding? = null
     private val binding get() = _binding!!
@@ -36,6 +35,7 @@ class PlayerMusicFragment: Fragment() {
     private lateinit var player: ExoPlayer
     private val args: PlayerMusicFragmentArgs by navArgs()
     private var position = 0
+    private var listRing = listOf<RingtoneEntity>()
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -56,13 +56,14 @@ class PlayerMusicFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlayerMusicBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[ShareViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[MyViewModel::class.java]
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         position = args.position
+        listRing = args.listRing.toList()
         configureView()
         configureExoplayer()
         configureSeekBar()
@@ -72,7 +73,7 @@ class PlayerMusicFragment: Fragment() {
     private fun configureExoplayer(){
         player = ExoPlayer.Builder(requireContext()).build()
         val concatenatingMediaSource = ConcatenatingMediaSource()
-        for(item in viewModel.ringtoneList.value!!){
+        for(item in listRing){
             val mediaItem = MediaItem.fromUri(item.url)
             val mediaSource = ProgressiveMediaSource
                 .Factory(DefaultDataSource.Factory(requireContext())).createMediaSource(mediaItem)
@@ -90,16 +91,16 @@ class PlayerMusicFragment: Fragment() {
             findNavController().navigate(R.id.action_playerMusicFragment_to_ringTuneFragment)
         }
         binding.favoriteButton.setOnClickListener {
-            val ringtoneList = viewModel.ringtoneList.value!!
+            val ringtoneList = listRing
             ringtoneList[position].isFavorite = !ringtoneList[position].isFavorite
-            viewModel.ringtoneList.value = ringtoneList
+            listRing = ringtoneList
             setFavorite()
             lifecycleScope.launch {
                 viewModel.ringtoneDataAccessObject.updateRingtone(ringtoneList[position])
             }
         }
         binding.skipNextButton.setOnClickListener {
-            if(position == viewModel.ringtoneList.value!!.size - 1){
+            if(position == listRing.size - 1){
                 position = 0
             }else{
                 position++
@@ -108,7 +109,7 @@ class PlayerMusicFragment: Fragment() {
         }
         binding.skipPreviousButton.setOnClickListener {
             if(position == 0){
-                position = viewModel.ringtoneList.value!!.size - 1
+                position = listRing.size - 1
             }else{
                 position--
             }
@@ -137,16 +138,16 @@ class PlayerMusicFragment: Fragment() {
     }
 
     private fun loadUIRefPosition(){
-        binding.ringtoneName.text = viewModel.ringtoneList.value!![position].name
+        binding.ringtoneName.text = listRing[position].name
         setFavorite()
         binding.detailButton.setOnClickListener {
-            val action = PlayerMusicFragmentDirections.actionPlayerMusicFragmentToRingtoneDetailFragment(position)
+            val action = PlayerMusicFragmentDirections.actionPlayerMusicFragmentToRingtoneDetailFragment(listRing.toTypedArray(), position)
             findNavController().navigate(action)
         }
     }
 
     private fun setFavorite(){
-        if(viewModel.ringtoneList.value!![position].isFavorite){
+        if(listRing[position].isFavorite){
             binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_36)
         }else{
             binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_border_36)

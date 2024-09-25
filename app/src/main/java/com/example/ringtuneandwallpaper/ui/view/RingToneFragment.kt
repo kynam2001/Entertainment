@@ -1,7 +1,6 @@
 package com.example.ringtuneandwallpaper.ui.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +12,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.ui.adapter.RingtoneAdapter
 import com.example.ringtuneandwallpaper.databinding.FragmentRingToneBinding
-import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
+import com.example.ringtuneandwallpaper.viewmodel.MyViewModel
 
 class RingToneFragment: Fragment(){
 
-    private lateinit var viewModel: ShareViewModel
+    private lateinit var viewModel: MyViewModel
     private var _binding: FragmentRingToneBinding? = null
     private val binding get() = _binding!!
 
@@ -32,7 +31,7 @@ class RingToneFragment: Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[ShareViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[MyViewModel::class.java]
         viewModel.fetchRingtones()
         binding.settingButton.setOnClickListener {
             findNavController().navigate(R.id.action_ringTuneFragment_to_settingFragment)
@@ -42,14 +41,12 @@ class RingToneFragment: Fragment(){
         }
         binding.ringtoneTab.setOnClickListener {
             binding.recyclerViewRingtone.adapter = RingtoneAdapter(
-                null,
                 viewModel.ringtoneList.value!!,
                 findNavController()
             )
         }
         binding.favoriteTab.setOnClickListener {
             binding.recyclerViewRingtone.adapter = RingtoneAdapter(
-                null,
                 viewModel.ringtoneList.value!!.filter { ringtone -> ringtone.isFavorite },
                 findNavController()
             )
@@ -59,7 +56,6 @@ class RingToneFragment: Fragment(){
         }
         viewModel.ringtoneList.observe(viewLifecycleOwner) { ringtoneList ->
             binding.recyclerViewRingtone.adapter = RingtoneAdapter(
-                null,
                 ringtoneList,
                 findNavController()
             )
@@ -87,7 +83,6 @@ class RingToneFragment: Fragment(){
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if(viewModel.ringtoneList.value!!.any { ringtone -> ringtone.name == query }) {
                     binding.recyclerViewRingtone.adapter = RingtoneAdapter(
-                        viewModel,
                         viewModel.ringtoneList.value!!.filter { ringtone -> ringtone.name == query },
                         findNavController()
                     )
