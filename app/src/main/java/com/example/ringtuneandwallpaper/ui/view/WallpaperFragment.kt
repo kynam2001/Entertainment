@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,10 +16,12 @@ import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.ui.adapter.WallpaperAdapter
 import com.example.ringtuneandwallpaper.databinding.FragmentWallpaperBinding
 import com.example.ringtuneandwallpaper.viewmodel.MyViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class WallpaperFragment: Fragment(){
 
-    private lateinit var viewModel: MyViewModel
+    private val viewModel: MyViewModel by viewModels()
 
     private var _binding: FragmentWallpaperBinding? = null
     private val binding get() = _binding!!
@@ -34,7 +37,6 @@ class WallpaperFragment: Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[MyViewModel::class.java]
         viewModel.fetchWallpapers()
         binding.settingButton.setOnClickListener {
             findNavController().navigate(R.id.action_wallpaperFragment_to_settingFragment)

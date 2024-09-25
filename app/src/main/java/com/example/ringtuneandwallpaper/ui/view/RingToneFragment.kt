@@ -7,16 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.ui.adapter.RingtoneAdapter
 import com.example.ringtuneandwallpaper.databinding.FragmentRingToneBinding
 import com.example.ringtuneandwallpaper.viewmodel.MyViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RingToneFragment: Fragment(){
 
-    private lateinit var viewModel: MyViewModel
+    private val viewModel: MyViewModel by viewModels()
     private var _binding: FragmentRingToneBinding? = null
     private val binding get() = _binding!!
 
@@ -31,7 +34,6 @@ class RingToneFragment: Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[MyViewModel::class.java]
         viewModel.fetchRingtones()
         binding.settingButton.setOnClickListener {
             findNavController().navigate(R.id.action_ringTuneFragment_to_settingFragment)

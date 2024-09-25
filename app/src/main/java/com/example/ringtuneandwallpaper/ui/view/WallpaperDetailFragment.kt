@@ -9,11 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.ringtuneandwallpaper.databinding.FragmentWallpaperDetailBinding
-import com.example.ringtuneandwallpaper.viewmodel.MyViewModel
 
 class WallpaperDetailFragment: Fragment(){
-
-    private lateinit var viewModel: MyViewModel
 
     private var _binding: FragmentWallpaperDetailBinding? = null
     private val binding get() = _binding!!
@@ -26,7 +23,6 @@ class WallpaperDetailFragment: Fragment(){
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentWallpaperDetailBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[MyViewModel::class.java]
         return binding.root
     }
 
@@ -38,6 +34,6 @@ class WallpaperDetailFragment: Fragment(){
             val action = WallpaperDetailFragmentDirections.actionWallpaperDetailFragmentToFullscreenImageFragment(listWall.toTypedArray(), position)
             findNavController().navigate(action)
         }
-        binding.imageName.text = viewModel.wallpaperList.value!![position].name
+        binding.imageName.text = listWall[position].name
     }
 }

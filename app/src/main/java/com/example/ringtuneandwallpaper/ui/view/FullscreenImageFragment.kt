@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -16,12 +17,14 @@ import com.example.ringtuneandwallpaper.databinding.FragmentFullscreenImageBindi
 import com.example.ringtuneandwallpaper.model.WallpaperEntity
 import com.example.ringtuneandwallpaper.utility.OnSwipeTouchListener
 import com.example.ringtuneandwallpaper.viewmodel.MyViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 @SuppressLint("ClickableViewAccessibility")
 class FullscreenImageFragment: Fragment(){
 
-    private lateinit var viewModel: MyViewModel
+    private val viewModel: MyViewModel by viewModels()
 
     private var _binding: FragmentFullscreenImageBinding? = null
     private val binding get() = _binding!!
@@ -36,7 +39,6 @@ class FullscreenImageFragment: Fragment(){
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFullscreenImageBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[MyViewModel::class.java]
         return binding.root
     }
 
@@ -63,7 +65,7 @@ class FullscreenImageFragment: Fragment(){
             listWall = wallpaperList
             setFavorite()
             lifecycleScope.launch {
-                viewModel.wallpaperDataAccessObject.updateWallpaper(wallpaperList[position])
+                viewModel.updateWallpapers(listWall[position])
             }
         }
         binding.fullscreenImageView.setOnTouchListener (object: OnSwipeTouchListener(requireContext()){

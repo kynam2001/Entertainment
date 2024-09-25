@@ -3,6 +3,7 @@ package com.example.ringtuneandwallpaper.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ringtuneandwallpaper.dao.RingtoneDataAccessObject
 import com.example.ringtuneandwallpaper.dao.WallpaperDataAccessObject
@@ -13,72 +14,44 @@ import com.example.ringtuneandwallpaper.model.WallpaperApi
 import com.example.ringtuneandwallpaper.model.WallpaperDatabase
 import com.example.ringtuneandwallpaper.model.WallpaperEntity
 import com.example.ringtuneandwallpaper.repository.Repository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MyViewModel(application: Application): AndroidViewModel(application) {
-    private val repository = Repository()
-    val ringtoneDataAccessObject: RingtoneDataAccessObject = RingtoneDatabase.getDatabase(application.applicationContext).ringtoneDao()
-    val wallpaperDataAccessObject: WallpaperDataAccessObject = WallpaperDatabase.getDatabase(application.applicationContext).wallpaperDao()
+@HiltViewModel
+class MyViewModel @Inject constructor(
+    private val repository: Repository
+): ViewModel() {
+
     val ringtoneList = MutableLiveData<List<RingtoneEntity>>()
     var wallpaperList = MutableLiveData<List<WallpaperEntity>>()
-    private val isLoading = MutableLiveData<Boolean>()
-
-    private fun RingtoneApi.toEntity(): RingtoneEntity {
-        return RingtoneEntity(
-            name = name,
-            url = url,
-            isFavorite = false
-        )
-    }
 
     fun fetchRingtones() {
         viewModelScope.launch {
-            isLoading.value = true
-            try {
-                val existingRingtones = ringtoneDataAccessObject.getAllRingtones().first() // Lấy dữ liệu hiện có
-                if (existingRingtones.isEmpty()) { // Nếu không có dữ liệu, gọi API
-                    val newRingtones = repository.getRingtones()
-                    ringtoneDataAccessObject.insertRingtone(newRingtones.map { it.toEntity() })
-                }
-                ringtoneDataAccessObject.getAllRingtones().collect{ list ->
-                    ringtoneList.postValue(list)
-                }
-            }catch (e: Exception){
-                e.printStackTrace()
-            }finally {
-                isLoading.value = false
-            }
+            val ringtones = repository.fetchRingtones()
+            ringtoneList.postValue(ringtones)
         }
     }
 
-    private fun WallpaperApi.toEntity(): WallpaperEntity {
-        return WallpaperEntity(
-            name = name,
-            url = url,
-            isFavorite = false
-        )
-    }
-
-    fun fetchWallpapers(){
+    fun updateRingtones(ringtone: RingtoneEntity){
         viewModelScope.launch {
-            isLoading.value = true
-            try {
-                val existingWallpapers = wallpaperDataAccessObject.getAllWallpapers().first()
-                if(existingWallpapers.isEmpty()) {
-                    val newWallpapers = repository.getWallpapers()
-                    wallpaperDataAccessObject.insertWallpaper(newWallpapers.map { it.toEntity() })
-                }
-                wallpaperDataAccessObject.getAllWallpapers().collect{ list ->
-                    wallpaperList.postValue(list)
-                }
-            }catch (e: Exception){
-                e.printStackTrace()
-            }finally {
-                isLoading.value = false
-            }
+            repository.updateRingtone(ringtone)
         }
     }
 
+    fun fetchWallpapers() {
+        viewModelScope.launch {
+            val wallpapers = repository.fetchWallpapers()
+            wallpaperList.postValue(wallpapers)
+        }
+    }
+
+    fun updateWallpapers(wallpaper: WallpaperEntity){
+        viewModelScope.launch {
+            repository.updateWallpaper(wallpaper)
+        }
+
+    }
 
 }

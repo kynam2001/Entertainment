@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -23,11 +24,13 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class PlayerMusicFragment: Fragment() {
 
-    private lateinit var viewModel: MyViewModel
+    private val viewModel: MyViewModel by viewModels()
 
     private var _binding: FragmentPlayerMusicBinding? = null
     private val binding get() = _binding!!
@@ -56,7 +59,6 @@ class PlayerMusicFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlayerMusicBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[MyViewModel::class.java]
         return binding.root
     }
 
@@ -96,7 +98,7 @@ class PlayerMusicFragment: Fragment() {
             listRing = ringtoneList
             setFavorite()
             lifecycleScope.launch {
-                viewModel.ringtoneDataAccessObject.updateRingtone(ringtoneList[position])
+                viewModel.updateRingtones(listRing[position])
             }
         }
         binding.skipNextButton.setOnClickListener {
