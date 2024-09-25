@@ -40,14 +40,22 @@ class RingToneFragment: Fragment(){
         binding.backButton.setOnClickListener {
             findNavController().navigate(R.id.action_ringTuneFragment_to_startFragment)
         }
-        binding.searchTab.setOnClickListener {
-            searchRingtone()
-        }
         binding.ringtoneTab.setOnClickListener {
             binding.recyclerViewRingtone.adapter = RingtoneAdapter(
                 null,
                 viewModel.ringtoneList.value!!,
-                findNavController())
+                findNavController()
+            )
+        }
+        binding.favoriteTab.setOnClickListener {
+            binding.recyclerViewRingtone.adapter = RingtoneAdapter(
+                null,
+                viewModel.ringtoneList.value!!.filter { ringtone -> ringtone.isFavorite },
+                findNavController()
+            )
+        }
+        binding.searchTab.setOnClickListener {
+            searchRingtone()
         }
         viewModel.ringtoneList.observe(viewLifecycleOwner) { ringtoneList ->
             binding.recyclerViewRingtone.adapter = RingtoneAdapter(

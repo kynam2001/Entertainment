@@ -1,26 +1,25 @@
 package com.example.ringtuneandwallpaper.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.ringtuneandwallpaper.dao.RingtoneDataAccessObject
-import com.example.ringtuneandwallpaper.model.WallpaperDatabase
-import com.example.ringtuneandwallpaper.repository.Repository
 import com.example.ringtuneandwallpaper.dao.WallpaperDataAccessObject
 import com.example.ringtuneandwallpaper.model.RingtoneApi
 import com.example.ringtuneandwallpaper.model.RingtoneDatabase
 import com.example.ringtuneandwallpaper.model.RingtoneEntity
 import com.example.ringtuneandwallpaper.model.WallpaperApi
+import com.example.ringtuneandwallpaper.model.WallpaperDatabase
 import com.example.ringtuneandwallpaper.model.WallpaperEntity
+import com.example.ringtuneandwallpaper.repository.Repository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class ShareViewModel(application: Application): AndroidViewModel(application) {
     private val repository = Repository()
-    private val ringtoneDataAccessObject: RingtoneDataAccessObject = RingtoneDatabase.getDatabase(application.applicationContext).ringtoneDao()
-    private val wallpaperDataAccessObject: WallpaperDataAccessObject = WallpaperDatabase.getDatabase(application.applicationContext).wallpaperDao()
+    val ringtoneDataAccessObject: RingtoneDataAccessObject = RingtoneDatabase.getDatabase(application.applicationContext).ringtoneDao()
+    val wallpaperDataAccessObject: WallpaperDataAccessObject = WallpaperDatabase.getDatabase(application.applicationContext).wallpaperDao()
     val ringtoneList = MutableLiveData<List<RingtoneEntity>>()
     var wallpaperList = MutableLiveData<List<WallpaperEntity>>()
     private val isLoading = MutableLiveData<Boolean>()

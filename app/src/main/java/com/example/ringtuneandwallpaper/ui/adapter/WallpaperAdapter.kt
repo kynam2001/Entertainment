@@ -34,12 +34,12 @@ class WallpaperAdapter(
     }
 
     override fun onBindViewHolder(holder: WallpaperViewHolder, position: Int) {
-        Glide.with(context).load(dataset[position].url).into(holder.imageView)
         var index = position
         // Favorite or search list
         if(viewModel?.wallpaperList?.value != null){
             index = viewModel.wallpaperList.value!!.indexOf(dataset[position])
         }
+        Glide.with(context).load(dataset[position].url).into(holder.imageView)
         holder.imageView.setOnClickListener {
             val action = WallpaperFragmentDirections.actionWallpaperFragmentToFullscreenImageFragment(index)
             navController.navigate(action)

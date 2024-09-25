@@ -34,14 +34,14 @@ class RingtoneAdapter(
     }
 
     override fun onBindViewHolder(holder: RingtoneViewHolder, position: Int) {
-        holder.ringtoneNameView.text = dataset[position].name
-        holder.ringtoneTimeView.text = "3:50"
         var index = position
         Log.e("Vigelos", "onBindViewHolder: $index")
         // Favorite or search list
         if(viewModel?.ringtoneList?.value != null){
             index = viewModel.ringtoneList.value!!.indexOf(dataset[position])
         }
+        holder.ringtoneNameView.text = dataset[position].name
+        holder.ringtoneTimeView.text = "3:50"
         holder.ringtoneNameView.setOnClickListener {
             val action = RingToneFragmentDirections.actionRingTuneFragmentToPlayerMusicFragment(index)
             navController.navigate(action)

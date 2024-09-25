@@ -42,15 +42,24 @@ class WallpaperFragment: Fragment(){
         binding.backButton.setOnClickListener {
             findNavController().navigate(R.id.action_wallpaperFragment_to_startFragment)
         }
-        binding.searchTab.setOnClickListener {
-            searchWallpaper()
-        }
         binding.imageTab.setOnClickListener {
             binding.recyclerViewWallpaper.adapter = WallpaperAdapter(
                 requireContext(),
                 null,
                 viewModel.wallpaperList.value!!,
-                findNavController())
+                findNavController()
+            )
+        }
+        binding.favoriteTab.setOnClickListener {
+            binding.recyclerViewWallpaper.adapter = WallpaperAdapter(
+                requireContext(),
+                viewModel,
+                viewModel.wallpaperList.value!!.filter { wallpaper -> wallpaper.isFavorite },
+                findNavController()
+            )
+        }
+        binding.searchTab.setOnClickListener {
+            searchWallpaper()
         }
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
@@ -60,7 +69,8 @@ class WallpaperFragment: Fragment(){
                 requireContext(),
                 null,
                 wallpaperList,
-                findNavController())
+                findNavController()
+            )
         }
         binding.recyclerViewWallpaper.setHasFixedSize(true)
 

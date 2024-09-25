@@ -12,6 +12,7 @@ import android.widget.SeekBar
 import androidx.core.view.doOnDetach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.ringtuneandwallpaper.R
@@ -23,6 +24,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
+import kotlinx.coroutines.launch
 
 class PlayerMusicFragment: Fragment() {
 
@@ -36,8 +38,6 @@ class PlayerMusicFragment: Fragment() {
     private var position = 0
 
     private val handler = Handler(Looper.getMainLooper())
-
-    private var favorite = false
 
     private lateinit var rotationAnimator: ObjectAnimator
     private val updateSeekBarRunnable = object : Runnable {
@@ -90,7 +90,13 @@ class PlayerMusicFragment: Fragment() {
             findNavController().navigate(R.id.action_playerMusicFragment_to_ringTuneFragment)
         }
         binding.favoriteButton.setOnClickListener {
+            val ringtoneList = viewModel.ringtoneList.value!!
+            ringtoneList[position].isFavorite = !ringtoneList[position].isFavorite
+            viewModel.ringtoneList.value = ringtoneList
             setFavorite()
+            lifecycleScope.launch {
+                viewModel.ringtoneDataAccessObject.updateRingtone(ringtoneList[position])
+            }
         }
         binding.skipNextButton.setOnClickListener {
             if(position == viewModel.ringtoneList.value!!.size - 1){
@@ -132,14 +138,7 @@ class PlayerMusicFragment: Fragment() {
 
     private fun loadUIRefPosition(){
         binding.ringtoneName.text = viewModel.ringtoneList.value!![position].name
-        if(viewModel.ringtoneList.value!![position].isFavorite){
-            binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_36)
-            favorite = true
-        }
-        else{
-            binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_border_36)
-            favorite = false
-        }
+        setFavorite()
         binding.detailButton.setOnClickListener {
             val action = PlayerMusicFragmentDirections.actionPlayerMusicFragmentToRingtoneDetailFragment(position)
             findNavController().navigate(action)
@@ -147,15 +146,10 @@ class PlayerMusicFragment: Fragment() {
     }
 
     private fun setFavorite(){
-        if(!favorite) {
-            viewModel.ringtoneList.value!![position].isFavorite = true
+        if(viewModel.ringtoneList.value!![position].isFavorite){
             binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_36)
-            favorite = true
-        }
-        else{
-            viewModel.ringtoneList.value!![position].isFavorite = false
+        }else{
             binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_border_36)
-            favorite = false
         }
     }
 

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -14,6 +15,8 @@ import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.databinding.FragmentFullscreenImageBinding
 import com.example.ringtuneandwallpaper.utility.OnSwipeTouchListener
 import com.example.ringtuneandwallpaper.viewmodel.ShareViewModel
+import kotlinx.coroutines.launch
+
 @SuppressLint("ClickableViewAccessibility")
 class FullscreenImageFragment: Fragment(){
 
@@ -21,7 +24,6 @@ class FullscreenImageFragment: Fragment(){
 
     private var _binding: FragmentFullscreenImageBinding? = null
     private val binding get() = _binding!!
-    private var favorite = false
 
     private val args: FullscreenImageFragmentArgs by navArgs()
     private var position = 0
@@ -40,12 +42,11 @@ class FullscreenImageFragment: Fragment(){
         super.onViewCreated(view, savedInstanceState)
         position = args.position
         configureView()
-        binding.imageName.text = viewModel.wallpaperList.value!![position].name
-        Glide.with(this).load(viewModel.wallpaperList.value!![position].url).into(binding.fullscreenImageView)
 
     }
 
     private fun configureView(){
+        loadUIRefPosition()
         binding.backButton.setOnClickListener {
             findNavController().navigate(R.id.action_fullscreenImageFragment_to_wallpaperFragment)
         }
@@ -54,7 +55,13 @@ class FullscreenImageFragment: Fragment(){
             findNavController().navigate(action)
         }
         binding.favoriteButton.setOnClickListener {
+            val wallpaperList = viewModel.wallpaperList.value!!
+            wallpaperList[position].isFavorite = !wallpaperList[position].isFavorite
+            viewModel.wallpaperList.value = wallpaperList
             setFavorite()
+            lifecycleScope.launch {
+                viewModel.wallpaperDataAccessObject.updateWallpaper(wallpaperList[position])
+            }
         }
         binding.fullscreenImageView.setOnTouchListener (object: OnSwipeTouchListener(requireContext()){
             override fun onSwipeLeft() {
@@ -64,10 +71,7 @@ class FullscreenImageFragment: Fragment(){
                 else {
                     position += 1
                 }
-                binding.imageName.text = viewModel.wallpaperList.value!![position].name
-                Glide.with(this@FullscreenImageFragment)
-                    .load(viewModel.wallpaperList.value!![position].url).into(binding.fullscreenImageView)
-
+                loadUIRefPosition()
             }
 
             override fun onSwipeRight() {
@@ -77,21 +81,22 @@ class FullscreenImageFragment: Fragment(){
                 else{
                     position -= 1
                 }
-                binding.imageName.text = viewModel.wallpaperList.value!![position].name
-                Glide.with(this@FullscreenImageFragment)
-                    .load(viewModel.wallpaperList.value!![position].url).into(binding.fullscreenImageView)
+                loadUIRefPosition()
             }
         })
     }
 
+    private fun loadUIRefPosition(){
+        binding.imageName.text = viewModel.wallpaperList.value!![position].name
+        setFavorite()
+        Glide.with(this).load(viewModel.wallpaperList.value!![position].url).into(binding.fullscreenImageView)
+    }
+
     private fun setFavorite(){
-        if(!favorite) {
+        if(viewModel.wallpaperList.value!![position].isFavorite){
             binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_36)
-            favorite = true
-        }
-        else{
+        }else{
             binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_border_36)
-            favorite = false
         }
     }
 
