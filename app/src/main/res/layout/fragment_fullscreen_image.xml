@@ -55,4 +55,12 @@
         android:src="@drawable/baseline_favorite_border_36"
         android:layout_gravity="bottom|end" />
 
+    <Button
+        android:id="@+id/downloadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="Download"
+        android:layout_gravity="bottom|center_horizontal"/>
+
+
 </FrameLayout>

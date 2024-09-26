@@ -7,7 +7,6 @@ import com.example.ringtuneandwallpaper.dao.WallpaperDataAccessObject
 import com.example.ringtuneandwallpaper.model.RingtoneDatabase
 import com.example.ringtuneandwallpaper.model.WallpaperDatabase
 import com.example.ringtuneandwallpaper.network.ApiService
-import com.example.ringtuneandwallpaper.network.RetrofitInstance
 import com.example.ringtuneandwallpaper.repository.Repository
 import dagger.Module
 import dagger.Provides
@@ -19,11 +18,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-    @Provides
-    fun provideApiService(): ApiService {
-        return RetrofitInstance.api
-    }
 
     @Provides
     fun provideRingtoneDao(appDatabase: RingtoneDatabase): RingtoneDataAccessObject {

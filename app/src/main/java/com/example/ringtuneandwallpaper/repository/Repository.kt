@@ -7,8 +7,9 @@ import com.example.ringtuneandwallpaper.model.RingtoneEntity
 import com.example.ringtuneandwallpaper.model.WallpaperApi
 import com.example.ringtuneandwallpaper.model.WallpaperEntity
 import com.example.ringtuneandwallpaper.network.ApiService
-import com.example.ringtuneandwallpaper.network.RetrofitInstance
 import kotlinx.coroutines.flow.first
+import okhttp3.ResponseBody
+import retrofit2.Response
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -16,6 +17,10 @@ class Repository @Inject constructor(
     private val ringtoneDao: RingtoneDataAccessObject,
     private val wallpaperDao: WallpaperDataAccessObject
 ) {
+
+    suspend fun downloadFile(url: String): Response<ResponseBody> {
+        return api.downloadFile(url)
+    }
     // Lấy danh sách ringtones, kiểm tra Room Database trước khi gọi API
     suspend fun fetchRingtones(): List<RingtoneEntity> {
         val existingRingtones = ringtoneDao.getAllRingtones().first() // Lấy từ Room
