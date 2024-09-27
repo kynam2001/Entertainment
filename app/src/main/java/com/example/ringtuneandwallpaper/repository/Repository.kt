@@ -1,5 +1,6 @@
 package com.example.ringtuneandwallpaper.repository
 
+import android.util.Log
 import com.example.ringtuneandwallpaper.dao.RingtoneDataAccessObject
 import com.example.ringtuneandwallpaper.dao.WallpaperDataAccessObject
 import com.example.ringtuneandwallpaper.model.RingtoneApi
@@ -61,7 +62,8 @@ class Repository @Inject constructor(
         return RingtoneEntity(
             name = name,
             url = url,
-            isFavorite = false
+            isFavorite = false,
+            isDownloaded = false
         )
     }
 
@@ -70,7 +72,8 @@ class Repository @Inject constructor(
         return WallpaperEntity(
             name = name,
             url = url,
-            isFavorite = false
+            isFavorite = false,
+            isDownloaded = false
         )
     }
 }

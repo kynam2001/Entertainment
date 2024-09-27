@@ -35,6 +35,7 @@ class RingToneFragment: Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.fetchRingtones()
+        configureRecyclerView()
         binding.settingButton.setOnClickListener {
             findNavController().navigate(R.id.action_ringTuneFragment_to_settingFragment)
         }
@@ -53,9 +54,18 @@ class RingToneFragment: Fragment(){
                 findNavController()
             )
         }
+        binding.downloadTab.setOnClickListener {
+            binding.recyclerViewRingtone.adapter = RingtoneAdapter(
+                viewModel.ringtoneList.value!!.filter { ringtone -> ringtone.isDownloaded },
+                findNavController()
+            )
+        }
         binding.searchTab.setOnClickListener {
             searchRingtone()
         }
+    }
+
+    private fun configureRecyclerView(){
         viewModel.ringtoneList.observe(viewLifecycleOwner) { ringtoneList ->
             binding.recyclerViewRingtone.adapter = RingtoneAdapter(
                 ringtoneList,
@@ -63,11 +73,6 @@ class RingToneFragment: Fragment(){
             )
         }
         binding.recyclerViewRingtone.setHasFixedSize(true)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        closeSearchView()
     }
 
     override fun onDestroyView() {

@@ -1,16 +1,28 @@
 package com.example.ringtuneandwallpaper.ui.view
 
+import android.Manifest
 import android.animation.ObjectAnimator
+import android.content.ContentValues
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -26,8 +38,12 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import retrofit2.Response
+import java.io.InputStream
 
 @AndroidEntryPoint
+@RequiresApi(Build.VERSION_CODES.Q)
 class PlayerMusicFragment: Fragment() {
 
     private val viewModel: MyViewModel by viewModels()
@@ -53,6 +69,8 @@ class PlayerMusicFragment: Fragment() {
         }
     }
 
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -66,6 +84,14 @@ class PlayerMusicFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         position = args.position
         listRing = args.listRing.toList()
+        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                Toast.makeText(requireContext(), "Permission granted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+        requestPermission()
         configureView()
         configureExoplayer()
         configureSeekBar()
@@ -93,10 +119,19 @@ class PlayerMusicFragment: Fragment() {
             findNavController().navigate(R.id.action_playerMusicFragment_to_ringTuneFragment)
         }
         binding.favoriteButton.setOnClickListener {
-            val ringtoneList = listRing
-            ringtoneList[position].isFavorite = !ringtoneList[position].isFavorite
-            listRing = ringtoneList
+            listRing[position].isFavorite = !listRing[position].isFavorite
             setFavorite()
+            lifecycleScope.launch {
+                viewModel.updateRingtones(listRing[position])
+            }
+        }
+        binding.downloadButton.setOnClickListener {
+            if(listRing[position].isDownloaded){
+                Toast.makeText(requireContext(), "File already downloaded", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            listRing[position].isDownloaded = true
+            saveRingtone(listRing[position].url, listRing[position].name)
             lifecycleScope.launch {
                 viewModel.updateRingtones(listRing[position])
             }
@@ -139,12 +174,69 @@ class PlayerMusicFragment: Fragment() {
         rotationAnimator.start()
     }
 
+    private fun requestPermission(){
+        if(Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU){
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissionLauncher.launch(Manifest.permission.READ_MEDIA_AUDIO)
+            }
+        }
+    }
+
     private fun loadUIRefPosition(){
         binding.ringtoneName.text = listRing[position].name
         setFavorite()
         binding.detailButton.setOnClickListener {
             val action = PlayerMusicFragmentDirections.actionPlayerMusicFragmentToRingtoneDetailFragment(listRing.toTypedArray(), position)
             findNavController().navigate(action)
+        }
+    }
+
+    private var downloadResultObserver: Observer<Response<ResponseBody>>? = null
+    private var downloadInProgress = false
+
+    private fun saveRingtone(url: String, fileName: String){
+        if(downloadInProgress) return
+
+        downloadInProgress = true
+        viewModel.downloadFile(url)
+
+        downloadResultObserver = Observer { response ->
+            if (response.isSuccessful) {
+                //Lưu tệp vào bộ nhớ
+                val inputStream: InputStream? = response.body()?.byteStream()
+                saveFileToDownloadFolder(inputStream, fileName)
+                Log.e("Vigelos", "download success")
+            } else {
+                Toast.makeText(requireContext(), "Download failed", Toast.LENGTH_SHORT).show()
+            }
+            downloadResultObserver?.let{
+                viewModel.downloadResult.removeObserver(it)
+            }
+            downloadResultObserver = null
+            downloadInProgress = false
+        }
+
+        viewModel.downloadResult.observe(viewLifecycleOwner, downloadResultObserver!!)
+    }
+
+    private fun saveFileToDownloadFolder(inputStream: InputStream?, fileName: String){
+        val resolver = requireContext().contentResolver
+        // Tạo metadata cho tệp
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Downloads.DISPLAY_NAME, fileName) // Tên tệp
+            put(MediaStore.Downloads.MIME_TYPE, "audio/mpeg")    // Loại MIME
+            put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS) // Đường dẫn
+        }
+        // Chèn tệp vào MediaStore để lấy URI
+        val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+        // Nếu thành công thì tiến hành ghi dữ liệu vào tệp
+        uri?.let {
+            resolver.openOutputStream(it).use { outputStream ->
+                inputStream?.copyTo(outputStream!!)
+            }
+            Toast.makeText(requireContext(), "Tệp đã lưu vào thư mục Download", Toast.LENGTH_SHORT).show()
+        } ?: run {
+            Toast.makeText(requireContext(), "Lưu tệp thất bại", Toast.LENGTH_SHORT).show()
         }
     }
 

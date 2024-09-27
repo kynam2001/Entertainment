@@ -3,8 +3,12 @@ package com.example.ringtuneandwallpaper.ui.view
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.ContentValues
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -30,10 +35,12 @@ import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.Response
 import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStream
 
 @AndroidEntryPoint
 @SuppressLint("ClickableViewAccessibility")
+@RequiresApi(Build.VERSION_CODES.Q)
 class FullscreenImageFragment: Fragment(){
 
     private val viewModel: MyViewModel by viewModels()
@@ -67,8 +74,8 @@ class FullscreenImageFragment: Fragment(){
                 Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
             }
         }
+        requestPermission()
         configureView()
-
     }
 
     private fun configureView(){
@@ -81,13 +88,19 @@ class FullscreenImageFragment: Fragment(){
             findNavController().navigate(action)
         }
         binding.downloadButton.setOnClickListener {
-            requestPermission()
+            if(listWall[position].isDownloaded){
+                Toast.makeText(requireContext(), "File already downloaded", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            listWall[position].isDownloaded = true
             saveWallpaper(listWall[position].url, listWall[position].name)
+            lifecycleScope.launch {
+                Log.e("Vigelos", "updated")
+                viewModel.updateWallpapers(listWall[position])
+            }
         }
         binding.favoriteButton.setOnClickListener {
-            val wallpaperList = listWall
-            wallpaperList[position].isFavorite = !wallpaperList[position].isFavorite
-            listWall = wallpaperList
+            listWall[position].isFavorite = !listWall[position].isFavorite
             setFavorite()
             lifecycleScope.launch {
                 viewModel.updateWallpapers(listWall[position])
@@ -127,22 +140,11 @@ class FullscreenImageFragment: Fragment(){
 
         downloadResultObserver = Observer { response ->
             if (response.isSuccessful) {
-                val inputStream: InputStream? = response.body()?.byteStream()
-                //Tạo đường dẫn lưu tệp
-                val directory = requireContext().getExternalFilesDir(null)
-                val file = File(directory, fileName)
                 //Lưu tệp vào bộ nhớ
-                if (file.exists()) {
-                    promptOverwrite(inputStream, directory!!, fileName)
-                } else {
-                    saveFile(inputStream, file)
-                    inputStream?.close()
-                    Toast.makeText(
-                        requireContext(),
-                        "File saved: ${file.absolutePath}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                val inputStream: InputStream? = response.body()?.byteStream()
+                saveFileToDownloadFolder(inputStream, fileName)
+//                updateDatabase()
+                Log.e("Vigelos", "download success")
             } else {
                 Toast.makeText(requireContext(), "Download failed", Toast.LENGTH_SHORT).show()
             }
@@ -156,52 +158,73 @@ class FullscreenImageFragment: Fragment(){
         viewModel.downloadResult.observe(viewLifecycleOwner, downloadResultObserver!!)
     }
 
-    private fun saveFile(inputStream: InputStream?, file: File){
-        file.outputStream().use { outputStream ->
-            inputStream.use { inputStream ->
-                inputStream?.copyTo(outputStream)
+    private fun saveFileToDownloadFolder(inputStream: InputStream?, fileName: String){
+        val resolver = requireContext().contentResolver
+        // Tạo metadata cho tệp
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Downloads.DISPLAY_NAME, fileName) // Tên tệp
+            put(MediaStore.Downloads.MIME_TYPE, "image/jpeg")    // Loại MIME
+            put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS) // Đường dẫn
+        }
+        // Chèn tệp vào MediaStore để lấy URI
+        val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+        // Nếu thành công thì tiến hành ghi dữ liệu vào tệp
+        uri?.let {
+            resolver.openOutputStream(it).use { outputStream ->
+                inputStream?.copyTo(outputStream!!)
             }
+            Toast.makeText(requireContext(), "Tệp đã lưu vào thư mục Download", Toast.LENGTH_SHORT).show()
+        } ?: run {
+            Toast.makeText(requireContext(), "Lưu tệp thất bại", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun getUniqueFileName(directory: File, fileName: String): File {
-        var file = File(directory, fileName)
+//    private fun saveFile(inputStream: InputStream?, file: File){
+//        file.outputStream().use { outputStream ->
+//            inputStream.use { inputStream ->
+//                inputStream?.copyTo(outputStream)
+//            }
+//        }
+//    }
 
-        // Tách tên file và phần mở rộng (extension)
-        val fileNameWithoutExtension = file.nameWithoutExtension
-        val extension = file.extension
-
-        var counter = 1
-        // Kiểm tra nếu file đã tồn tại, tiếp tục thêm số vào tên file
-        while (file.exists()) {
-            // Tạo tên file mới với số đếm (counter)
-            val newFileName = "$fileNameWithoutExtension($counter).$extension"
-            file = File(directory, newFileName)
-            counter++
-        }
-        return file
-    }
-
-    private fun promptOverwrite(inputStream: InputStream?, directory: File, fileName: String){
-        // Hiển thị hộp thoại cho người dùng chọn "Ghi đè" hoặc "Thêm"
-        val file = File(directory, fileName)
-        AlertDialog.Builder(context)
-            .setTitle("Lưu tệp")
-            .setMessage("Bạn có muốn ghi đè tệp hiện có không?")
-            .setPositiveButton("Ghi đè") { _, _ ->
-                saveFile(inputStream, file)
-                Toast.makeText(requireContext(), "File overwritten: ${file.absolutePath}", Toast.LENGTH_SHORT).show()
-            }
-            .setNegativeButton("Không") { _, _ ->
-                val newFile = getUniqueFileName(directory, fileName)
-                saveFile(inputStream, newFile)
-                Toast.makeText(requireContext(), "File saved: ${newFile.absolutePath}", Toast.LENGTH_SHORT).show()
-            }
-            .show()
-    }
+//    private fun getUniqueFileName(directory: File, fileName: String): File {
+//        var file = File(directory, fileName)
+//
+//        // Tách tên file và phần mở rộng (extension)
+//        val fileNameWithoutExtension = file.nameWithoutExtension
+//        val extension = file.extension
+//
+//        var counter = 1
+//        // Kiểm tra nếu file đã tồn tại, tiếp tục thêm số vào tên file
+//        while (file.exists()) {
+//            // Tạo tên file mới với số đếm (counter)
+//            val newFileName = "$fileNameWithoutExtension($counter).$extension"
+//            file = File(directory, newFileName)
+//            counter++
+//        }
+//        return file
+//    }
+//
+//    private fun promptOverwrite(inputStream: InputStream?, directory: File, fileName: String){
+//        // Hiển thị hộp thoại cho người dùng chọn "Ghi đè" hoặc "Thêm"
+//        val file = File(directory, fileName)
+//        AlertDialog.Builder(context)
+//            .setTitle("Lưu tệp")
+//            .setMessage("Bạn có muốn ghi đè tệp hiện có không?")
+//            .setPositiveButton("Ghi đè") { _, _ ->
+//                saveFile(inputStream, file)
+//                Toast.makeText(requireContext(), "File overwritten: ${file.absolutePath}", Toast.LENGTH_SHORT).show()
+//            }
+//            .setNegativeButton("Không") { _, _ ->
+//                val newFile = getUniqueFileName(directory, fileName)
+//                saveFile(inputStream, newFile)
+//                Toast.makeText(requireContext(), "File saved: ${newFile.absolutePath}", Toast.LENGTH_SHORT).show()
+//            }
+//            .show()
+//    }
 
     private fun requestPermission(){
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU){
+        if(Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU){
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
             }

@@ -1,6 +1,7 @@
 package com.example.ringtuneandwallpaper.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +39,7 @@ class WallpaperFragment: Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.fetchWallpapers()
+        configureRecyclerView()
         binding.settingButton.setOnClickListener {
             findNavController().navigate(R.id.action_wallpaperFragment_to_settingFragment)
         }
@@ -58,9 +60,20 @@ class WallpaperFragment: Fragment(){
                 findNavController()
             )
         }
+        binding.downloadTab.setOnClickListener {
+            binding.recyclerViewWallpaper.adapter = WallpaperAdapter(
+                requireContext(),
+                viewModel.wallpaperList.value!!.filter { wallpaper -> wallpaper.isDownloaded },
+                findNavController()
+            )
+        }
         binding.searchTab.setOnClickListener {
             searchWallpaper()
         }
+
+    }
+
+    private fun configureRecyclerView(){
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
         binding.recyclerViewWallpaper.layoutManager = staggeredGridLayoutManager
@@ -72,7 +85,6 @@ class WallpaperFragment: Fragment(){
             )
         }
         binding.recyclerViewWallpaper.setHasFixedSize(true)
-
     }
 
     override fun onPause() {
