@@ -205,7 +205,7 @@ class PlayerMusicFragment: Fragment() {
                 //Lưu tệp vào bộ nhớ
                 val inputStream: InputStream? = response.body()?.byteStream()
                 saveFileToDownloadFolder(inputStream, fileName)
-                Log.e("Vigelos", "download success")
+                Log.e("Vigelos", "Download success")
             } else {
                 Toast.makeText(requireContext(), "Download failed", Toast.LENGTH_SHORT).show()
             }
@@ -227,6 +227,9 @@ class PlayerMusicFragment: Fragment() {
             put(MediaStore.Downloads.MIME_TYPE, "audio/mpeg")    // Loại MIME
             put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS) // Đường dẫn
         }
+        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        Log.e("Vigelos", "Full Download Directory: ${downloadsDir.absolutePath}")
+        Log.e("Vigelos", "Folder: ${Environment.DIRECTORY_DOWNLOADS}")
         // Chèn tệp vào MediaStore để lấy URI
         val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
         // Nếu thành công thì tiến hành ghi dữ liệu vào tệp

@@ -1,23 +1,29 @@
 package com.example.ringtuneandwallpaper.ui.view
 
 import android.app.AlarmManager
+import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.AlarmClock
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.ringtuneandwallpaper.databinding.FragmentRingtoneDetailBinding
 import java.io.File
 
+@RequiresApi(Build.VERSION_CODES.Q)
 class RingtoneDetailFragment: Fragment(){
 
     private var _binding: FragmentRingtoneDetailBinding? = null
@@ -44,11 +50,62 @@ class RingtoneDetailFragment: Fragment(){
         }
         binding.ringtoneName.text = listRing[position].name
         binding.setRingtoneButton.setOnClickListener {
-//            val file = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), listRing[position].name)
-//            val uri = saveFileToAlarmsDirectory(file)
-//            setAlarmSound(uri)
+            getFileUri(listRing[position].name)
         }
     }
+
+    private fun getFileUri(fileName: String) {
+        val uri = MediaStore.Downloads.EXTERNAL_CONTENT_URI
+        val projection = arrayOf(MediaStore.Downloads._ID,
+            MediaStore.Downloads.DISPLAY_NAME)
+        val selection = "${MediaStore.Downloads.DISPLAY_NAME} = ?"
+        Log.e("Vigelos", "File name: $fileName")
+        val selectionArgs = arrayOf("${fileName}.mp3")  // Thay bằng tên tệp đã xử lý
+
+        val cursor = requireContext().contentResolver.query(uri, projection, selection, selectionArgs, null)
+
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val fileUri = ContentUris.withAppendedId(uri, it.getLong(it.getColumnIndexOrThrow(MediaStore.Downloads._ID)))
+                moveFileToAlarmsFolder(fileUri, fileName)
+            }
+            else{
+                Toast.makeText(requireContext(), "Tệp chưa được download", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun moveFileToAlarmsFolder(fileUri: Uri, fileName: String) {
+        val resolver = requireContext().contentResolver
+
+        // Tạo metadata cho tệp trong thư mục Alarms
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Audio.Media.DISPLAY_NAME, fileName)  // Tên tệp
+            put(MediaStore.Audio.Media.MIME_TYPE, "audio/mpeg")  // Loại MIME
+            put(MediaStore.Audio.Media.RELATIVE_PATH, Environment.DIRECTORY_ALARMS)  // Thư mục Alarms
+            put(MediaStore.Audio.Media.IS_ALARM, true)  // Đánh dấu là âm báo thức
+            put(MediaStore.Audio.Media.IS_RINGTONE, false)
+            put(MediaStore.Audio.Media.IS_NOTIFICATION, false)
+        }
+
+        // Chèn tệp vào MediaStore trong thư mục Alarms
+        val alarmsUri = resolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        alarmsUri?.let {
+            // Mở InputStream từ URI của tệp trong thư mục Downloads
+            val inputStream = resolver.openInputStream(fileUri)
+
+            // Mở OutputStream tới thư mục Alarms
+            resolver.openOutputStream(it).use { outputStream ->
+                inputStream?.copyTo(outputStream!!)
+            }
+
+            Toast.makeText(requireContext(), "Tệp đã di chuyển vào thư mục Alarms", Toast.LENGTH_SHORT).show()
+        } ?: run {
+            Toast.makeText(requireContext(), "Di chuyển tệp thất bại", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     private fun saveFileToAlarmsDirectory(file: File): Uri {
         val values = ContentValues().apply {
@@ -69,16 +126,4 @@ class RingtoneDetailFragment: Fragment(){
         return uri
     }
 
-    private fun setAlarmSound(alarmUri: Uri) {
-        val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(AlarmClock.ACTION_SET_ALARM).apply {
-            putExtra(AlarmClock.EXTRA_RINGTONE, alarmUri.toString())
-            putExtra(AlarmClock.EXTRA_MESSAGE, "Wake Up!")
-            putExtra(AlarmClock.EXTRA_HOUR, 7)
-            putExtra(AlarmClock.EXTRA_MINUTES, 30)
-        }
-        if (intent.resolveActivity(requireContext().packageManager) != null) {
-            requireContext().startActivity(intent)
-        }
-    }
 }
