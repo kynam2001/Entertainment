@@ -75,6 +75,9 @@ dependencies {
     //hilt DI
     implementation ("com.google.dagger:hilt-android:2.52")
     kapt ("com.google.dagger:hilt-android-compiler:2.52")
+    //work manager
+    implementation ("androidx.work:work-runtime-ktx:2.9.1") // Kiểm tra phiên bản mới nhất
+
 
 }
 kapt {

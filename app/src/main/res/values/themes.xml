@@ -6,4 +6,58 @@
     </style>
 
     <style name="Theme.RingtuneAndWallpaper" parent="Base.Theme.RingtuneAndWallpaper" />
+
+    <style name="SizeButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+    
+    <style name="BackButtonStyle" parent="SizeButtonStyle">
+        <item name="android:src">@drawable/baseline_arrow_back_24</item>
+        <item name="contentDescription">back button</item>
+    </style>
+
+    <style name="SettingButtonStyle" parent="SizeButtonStyle">
+        <item name="android:src">@drawable/baseline_settings_24</item>
+        <item name="contentDescription">setting button</item>
+    </style>
+
+    <style name="DetailButtonStyle" parent="SizeButtonStyle">
+        <item name="android:src">@drawable/baseline_info_outline_36</item>
+        <item name="contentDescription">detail button</item>
+    </style>
+
+    <style name="FavoriteTabButtonStyle" parent="SizeButtonStyle">
+        <item name="android:src">@drawable/baseline_favorite_36</item>
+        <item name="contentDescription">favorite button</item>
+    </style>
+
+    <style name="DownloadTabButtonStyle" parent="SizeButtonStyle">
+        <item name="android:src">@drawable/baseline_download_36</item>
+        <item name="contentDescription">download button</item>
+    </style>
+
+    <style name="SearchTabButtonStyle" parent="SizeButtonStyle">
+        <item name="android:src">@drawable/baseline_search_36</item>
+        <item name="contentDescription">search button</item>
+    </style>
+
+    <style name="DownloadButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:text">Download</item>
+    </style>
+
+    <style name="HeaderTitleStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textStyle">italic|bold</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:shadowColor">#555555</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">4</item>
+    </style>
 </resources>

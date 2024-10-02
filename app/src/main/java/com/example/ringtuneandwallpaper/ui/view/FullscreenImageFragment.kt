@@ -179,50 +179,6 @@ class FullscreenImageFragment: Fragment(){
         }
     }
 
-//    private fun saveFile(inputStream: InputStream?, file: File){
-//        file.outputStream().use { outputStream ->
-//            inputStream.use { inputStream ->
-//                inputStream?.copyTo(outputStream)
-//            }
-//        }
-//    }
-
-//    private fun getUniqueFileName(directory: File, fileName: String): File {
-//        var file = File(directory, fileName)
-//
-//        // Tách tên file và phần mở rộng (extension)
-//        val fileNameWithoutExtension = file.nameWithoutExtension
-//        val extension = file.extension
-//
-//        var counter = 1
-//        // Kiểm tra nếu file đã tồn tại, tiếp tục thêm số vào tên file
-//        while (file.exists()) {
-//            // Tạo tên file mới với số đếm (counter)
-//            val newFileName = "$fileNameWithoutExtension($counter).$extension"
-//            file = File(directory, newFileName)
-//            counter++
-//        }
-//        return file
-//    }
-//
-//    private fun promptOverwrite(inputStream: InputStream?, directory: File, fileName: String){
-//        // Hiển thị hộp thoại cho người dùng chọn "Ghi đè" hoặc "Thêm"
-//        val file = File(directory, fileName)
-//        AlertDialog.Builder(context)
-//            .setTitle("Lưu tệp")
-//            .setMessage("Bạn có muốn ghi đè tệp hiện có không?")
-//            .setPositiveButton("Ghi đè") { _, _ ->
-//                saveFile(inputStream, file)
-//                Toast.makeText(requireContext(), "File overwritten: ${file.absolutePath}", Toast.LENGTH_SHORT).show()
-//            }
-//            .setNegativeButton("Không") { _, _ ->
-//                val newFile = getUniqueFileName(directory, fileName)
-//                saveFile(inputStream, newFile)
-//                Toast.makeText(requireContext(), "File saved: ${newFile.absolutePath}", Toast.LENGTH_SHORT).show()
-//            }
-//            .show()
-//    }
-
     private fun requestPermission(){
         if(Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU){
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {

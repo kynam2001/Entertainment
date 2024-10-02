@@ -106,24 +106,4 @@ class RingtoneDetailFragment: Fragment(){
         }
     }
 
-
-    private fun saveFileToAlarmsDirectory(file: File): Uri {
-        val values = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, file.name)
-            put(MediaStore.MediaColumns.MIME_TYPE, "audio/mp3")
-            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_ALARMS)
-        }
-
-        val resolver = requireContext().contentResolver
-        val uri = resolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values)
-
-        resolver.openOutputStream(uri!!).use { outputStream ->
-            file.inputStream().use { inputStream ->
-                inputStream.copyTo(outputStream!!)
-            }
-        }
-
-        return uri
-    }
-
 }

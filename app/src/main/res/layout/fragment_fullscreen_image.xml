@@ -8,35 +8,24 @@
 
     <ImageButton
         android:id="@+id/back_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:contentDescription="back button"
-        android:src="@drawable/baseline_arrow_back_24"
+        style="@style/BackButtonStyle"
+        android:background="#DCC5C5"
         android:elevation="1dp"/>
 
     <TextView
         android:id="@+id/imageName"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:textSize="24sp"
-        android:padding="8dp"
         android:text="Vigelos"
         android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-medium"
-        android:letterSpacing="0.05"
-        android:shadowColor="#555555"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="4"
+        style="@style/HeaderTitleStyle"
         android:layout_gravity="top|center_horizontal"
         android:elevation="1dp"/>
 
     <ImageButton
         android:id="@+id/detail_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/baseline_info_outline_36"
+        style="@style/DetailButtonStyle"
+        android:background="#DCC5C5"
         android:layout_gravity="top|end"
         android:elevation="1dp"/>
 
@@ -49,17 +38,14 @@
 
     <ImageButton
         android:id="@+id/favorite_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:contentDescription="favorite button"
-        android:src="@drawable/baseline_favorite_border_36"
+        style="@style/FavoriteTabButtonStyle"
+        android:background="#DCC5C5"
         android:layout_gravity="bottom|end" />
 
     <Button
         android:id="@+id/downloadButton"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:text="Download"
+        style="@style/DownloadButtonStyle"
+        android:background="#DCC5C5"
         android:layout_gravity="bottom|center_horizontal"/>
 
 

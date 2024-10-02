@@ -10,10 +10,8 @@
 
     <ImageButton
         android:id="@+id/back_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:contentDescription="back button"
-        android:src="@drawable/baseline_arrow_back_24"
+        style="@style/BackButtonStyle"
+        android:background="#DCC5C5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <TextView
@@ -22,25 +20,15 @@
         android:layout_height="wrap_content"
         android:text="Wallpapers"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:textStyle="italic|bold"
-        android:fontFamily="sans-serif-medium"
-        android:letterSpacing="0.05"
-        android:shadowColor="#555555"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="4"
-        android:padding="8dp"
+        style="@style/HeaderTitleStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/back_button"/>
 
     <ImageButton
         android:id="@+id/setting_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:contentDescription="setting button"
-        android:src="@drawable/baseline_settings_24"
+        style="@style/SettingButtonStyle"
+        android:background="#DCC5C5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <androidx.recyclerview.widget.RecyclerView
@@ -53,34 +41,31 @@
         app:layout_constraintBottom_toTopOf="@id/image_tab"/>
     <ImageButton
         android:id="@+id/image_tab"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        style="@style/SizeButtonStyle"
         android:src="@drawable/baseline_image_36"
+        android:background="#DCC5C5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/favorite_tab"
         app:layout_constraintBottom_toBottomOf="parent" />
     <ImageButton
         android:id="@+id/favorite_tab"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/baseline_favorite_36"
+        style="@style/FavoriteTabButtonStyle"
+        android:background="#DCC5C5"
         app:layout_constraintStart_toEndOf="@id/image_tab"
         app:layout_constraintEnd_toStartOf="@id/download_tab"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <ImageButton
         android:id="@+id/download_tab"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/baseline_download_36"
+        style="@style/DownloadTabButtonStyle"
+        android:background="#DCC5C5"
         app:layout_constraintStart_toEndOf="@id/favorite_tab"
         app:layout_constraintEnd_toStartOf="@id/search_tab"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <ImageButton
         android:id="@+id/search_tab"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/baseline_search_36"
+        style="@style/SearchTabButtonStyle"
+        android:background="#DCC5C5"
         app:layout_constraintStart_toEndOf="@id/download_tab"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

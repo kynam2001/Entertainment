@@ -9,10 +9,7 @@
 
     <ImageButton
         android:id="@+id/back_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/baseline_arrow_back_24"
-        android:contentDescription="back button"
+        style="@style/BackButtonStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <TextView
@@ -20,17 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:text="Setting"
-        android:textSize="24sp"
-        android:padding="8dp"
         android:textColor="#FFFFFF"
-        android:textStyle="italic|bold"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:letterSpacing="0.05"
-        android:shadowColor="#555555"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="4"
+        style="@style/HeaderTitleStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

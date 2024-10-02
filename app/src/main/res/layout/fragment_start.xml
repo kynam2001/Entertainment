@@ -16,9 +16,11 @@
 
     <Button
         android:id="@+id/ringtuneButton"
-        android:text="Ringtone"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:text="RINGTONE"
+        android:textColor="#889ADC"
+        style="@style/HeaderTitleStyle"
         android:background="#DCC5C5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideLineVertical"
@@ -27,9 +29,11 @@
 
     <Button
         android:id="@+id/wallpaperButton"
-        android:text="Wallpaper"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:text="WALLPAPER"
+        android:textColor="#DCC5C5"
+        style="@style/HeaderTitleStyle"
         android:background="#889ADC"
         app:layout_constraintStart_toEndOf="@+id/guideLineVertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,11 +42,8 @@
 
     <ImageButton
         android:id="@+id/setting_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        style="@style/SettingButtonStyle"
         android:elevation="2dp"
-        android:src="@drawable/baseline_settings_24"
-        android:contentDescription="setting button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
