@@ -1,3 +1,5 @@
 package com.example.ringtuneandwallpaper.model
 
-data class RingtoneApi(val name: String, val url: String)
+import kotlin.time.Duration
+
+data class RingtoneApi(val name: String, val url: String, val duration: Int)

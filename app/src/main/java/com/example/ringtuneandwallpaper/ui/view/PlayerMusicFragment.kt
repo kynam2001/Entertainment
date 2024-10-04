@@ -29,6 +29,8 @@ import androidx.navigation.fragment.navArgs
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.databinding.FragmentPlayerMusicBinding
 import com.example.ringtuneandwallpaper.model.RingtoneEntity
+import com.example.ringtuneandwallpaper.utility.navigateBack
+import com.example.ringtuneandwallpaper.utility.navigateForward
 import com.example.ringtuneandwallpaper.viewmodel.MyViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -84,6 +86,7 @@ class PlayerMusicFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         position = args.position
         listRing = args.listRing.toList()
+
         requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
                 Toast.makeText(requireContext(), "Permission granted", Toast.LENGTH_SHORT).show()
@@ -91,6 +94,7 @@ class PlayerMusicFragment: Fragment() {
                 Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
             }
         }
+
         requestPermission()
         configureView()
         configureExoplayer()
@@ -116,7 +120,8 @@ class PlayerMusicFragment: Fragment() {
 
     private fun configureView(){
         binding.backButton.setOnClickListener {
-            findNavController().navigate(R.id.action_playerMusicFragment_to_ringTuneFragment)
+            val action = PlayerMusicFragmentDirections.actionPlayerMusicFragmentToRingTuneFragment()
+            findNavController().navigateForward(action)
         }
         binding.favoriteButton.setOnClickListener {
             listRing[position].isFavorite = !listRing[position].isFavorite
@@ -143,6 +148,7 @@ class PlayerMusicFragment: Fragment() {
                 position++
             }
             player.seekTo(position, 0)
+            switchDiskIcon(false)
         }
         binding.skipPreviousButton.setOnClickListener {
             if(position == 0){
@@ -151,6 +157,7 @@ class PlayerMusicFragment: Fragment() {
                 position--
             }
             player.seekTo(position, 0)
+            switchDiskIcon(true)
         }
         binding.playPauseButton.setOnClickListener {
             if (player.isPlaying) {
@@ -183,11 +190,11 @@ class PlayerMusicFragment: Fragment() {
     }
 
     private fun loadUIRefPosition(){
-        binding.ringtoneName.text = listRing[position].name
+        binding.ringtoneName.text = listRing[position].name.replace("_"," ")
         setFavorite()
         binding.detailButton.setOnClickListener {
             val action = PlayerMusicFragmentDirections.actionPlayerMusicFragmentToRingtoneDetailFragment(listRing.toTypedArray(), position)
-            findNavController().navigate(action)
+            findNavController().navigateBack(action)
         }
     }
 
@@ -277,8 +284,10 @@ class PlayerMusicFragment: Fragment() {
 
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                 super.onMediaItemTransition(mediaItem, reason)
+                Log.e(position.toString(), player.currentMediaItemIndex.toString())
                 if(position != player.currentMediaItemIndex){
                     position = player.currentMediaItemIndex
+                    switchDiskIcon(false)
                 }
                 loadUIRefPosition()
                 rotationAnimator.cancel()
@@ -305,6 +314,22 @@ class PlayerMusicFragment: Fragment() {
             }
 
         })
+    }
+
+    private fun switchDiskIcon(ifReverse: Boolean) {
+        // Di chuyển imageView1 sang trái
+        if(ifReverse){
+            binding.diskIcon.translationX = -1000f
+            binding.diskIcon.animate()
+                .translationX(0f)  // Di chuyển sang phải
+                .setDuration(500)
+        }
+        else {
+            binding.diskIcon.translationX = 1000f
+            binding.diskIcon.animate()
+                .translationX(0f)  // Di chuyển sang trái
+                .setDuration(500)
+        }
     }
 
     override fun onDestroyView() {

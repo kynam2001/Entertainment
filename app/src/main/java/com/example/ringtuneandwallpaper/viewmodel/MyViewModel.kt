@@ -3,6 +3,7 @@ package com.example.ringtuneandwallpaper.viewmodel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,6 +32,12 @@ class MyViewModel @Inject constructor(
     val ringtoneList = MutableLiveData<List<RingtoneEntity>>()
     var wallpaperList = MutableLiveData<List<WallpaperEntity>>()
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
+    val ifDownloadedAddToFavorite = MutableLiveData<Boolean>()
+    val ifDownloadWithoutWifi = MutableLiveData<Boolean>()
+
     fun downloadFile(url: String) {
         viewModelScope.launch {
             downloadResult.value = repository.downloadFile(url)
@@ -38,9 +45,11 @@ class MyViewModel @Inject constructor(
     }
 
     fun fetchRingtones() {
+        _isLoading.value = true
         viewModelScope.launch {
             val ringtones = repository.fetchRingtones()
             ringtoneList.postValue(ringtones)
+            _isLoading.value = false
         }
     }
 
@@ -51,10 +60,15 @@ class MyViewModel @Inject constructor(
     }
 
     fun fetchWallpapers() {
+        _isLoading.value = true
         viewModelScope.launch {
             val wallpapers = repository.fetchWallpapers()
             wallpaperList.postValue(wallpapers)
         }
+    }
+
+    fun onWallpaperLoaded(){
+        _isLoading.value = false
     }
 
     fun updateWallpapers(wallpaper: WallpaperEntity){

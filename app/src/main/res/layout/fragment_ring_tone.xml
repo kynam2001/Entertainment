@@ -10,7 +10,7 @@
     <ImageButton
         android:id="@+id/back_button"
         style="@style/BackButtonStyle"
-        android:background="#889ADC"
+        android:background="@drawable/button_clicked_ringtone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <TextView
@@ -27,7 +27,7 @@
     <ImageButton
         android:id="@+id/setting_button"
         style="@style/SettingButtonStyle"
-        android:background="#889ADC"
+        android:background="@drawable/button_clicked_ringtone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <androidx.recyclerview.widget.RecyclerView
@@ -45,7 +45,7 @@
         android:id="@+id/ringtone_tab"
         style="@style/SizeButtonStyle"
         android:src="@drawable/baseline_music_note_36"
-        android:background="#889ADC"
+        android:background="@drawable/button_clicked_ringtone"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/favorite_tab"
@@ -53,21 +53,21 @@
     <ImageButton
         android:id="@+id/favorite_tab"
         style="@style/FavoriteTabButtonStyle"
-        android:background="#889ADC"
+        android:background="@drawable/button_clicked_ringtone"
         app:layout_constraintStart_toEndOf="@id/ringtone_tab"
         app:layout_constraintEnd_toStartOf="@id/download_tab"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <ImageButton
         android:id="@+id/download_tab"
         style="@style/DownloadTabButtonStyle"
-        android:background="#889ADC"
+        android:background="@drawable/button_clicked_ringtone"
         app:layout_constraintStart_toEndOf="@id/favorite_tab"
         app:layout_constraintEnd_toStartOf="@id/search_tab"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <ImageButton
         android:id="@+id/search_tab"
         style="@style/SearchTabButtonStyle"
-        android:background="#889ADC"
+        android:background="@drawable/button_clicked_ringtone"
         app:layout_constraintStart_toEndOf="@id/download_tab"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -85,6 +85,24 @@
         android:elevation="4dp"
         android:padding="16dp"
         android:layout_margin="16dp"/>
+
+    <FrameLayout
+        android:id="@+id/loading_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#DCC5C5"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <ProgressBar
+            android:id="@+id/loading_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
     <View
         android:id="@+id/dim_background"
         android:layout_width="0dp"

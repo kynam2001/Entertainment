@@ -12,6 +12,8 @@ data class WallpaperEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val url: String,
+    val location: String,
+    val dimension: String,
     var isFavorite: Boolean = false,
     var isDownloaded: Boolean = false
 ): Parcelable

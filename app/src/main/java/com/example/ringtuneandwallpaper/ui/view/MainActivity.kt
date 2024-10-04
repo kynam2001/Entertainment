@@ -5,6 +5,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
+import androidx.navigation.NavOptions
+import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -41,13 +41,10 @@
         android:label="StartFragment" >
         <action
             android:id="@+id/action_startFragment_to_ringTuneFragment"
-            app:destination="@id/ringTuneFragment" />
+            app:destination="@id/ringTuneFragment"/>
         <action
             android:id="@+id/action_startFragment_to_wallpaperFragment"
             app:destination="@id/wallpaperFragment" />
-        <action
-            android:id="@+id/action_startFragment_to_settingFragment"
-            app:destination="@id/settingFragment" />
     </fragment>
     <fragment
         android:id="@+id/playerMusicFragment"

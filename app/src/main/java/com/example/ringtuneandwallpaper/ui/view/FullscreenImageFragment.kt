@@ -1,10 +1,15 @@
 package com.example.ringtuneandwallpaper.ui.view
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.Animator.AnimatorListener
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.ContentValues
+import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -25,17 +30,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.databinding.FragmentFullscreenImageBinding
 import com.example.ringtuneandwallpaper.model.WallpaperEntity
 import com.example.ringtuneandwallpaper.utility.OnSwipeTouchListener
+import com.example.ringtuneandwallpaper.utility.navigateBack
+import com.example.ringtuneandwallpaper.utility.navigateForward
 import com.example.ringtuneandwallpaper.viewmodel.MyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.Response
-import java.io.File
-import java.io.FileOutputStream
 import java.io.InputStream
 
 @AndroidEntryPoint
@@ -81,11 +90,12 @@ class FullscreenImageFragment: Fragment(){
     private fun configureView(){
         loadUIRefPosition()
         binding.backButton.setOnClickListener {
-            findNavController().navigate(R.id.action_fullscreenImageFragment_to_wallpaperFragment)
+            val action = FullscreenImageFragmentDirections.actionFullscreenImageFragmentToWallpaperFragment()
+            findNavController().navigateBack(action)
         }
         binding.detailButton.setOnClickListener {
             val action = FullscreenImageFragmentDirections.actionFullscreenImageFragmentToWallpaperDetailFragment(listWall.toTypedArray(), position)
-            findNavController().navigate(action)
+            findNavController().navigateForward(action)
         }
         binding.downloadButton.setOnClickListener {
             if(listWall[position].isDownloaded){
@@ -94,6 +104,10 @@ class FullscreenImageFragment: Fragment(){
             }
             listWall[position].isDownloaded = true
             saveWallpaper(listWall[position].url, listWall[position].name)
+//            if(viewModel.ifDownloadedAddToFavorite){
+//                listWall[position].isFavorite = true
+//                setFavorite()
+//            }
             lifecycleScope.launch {
                 Log.e("Vigelos", "updated")
                 viewModel.updateWallpapers(listWall[position])
@@ -129,11 +143,27 @@ class FullscreenImageFragment: Fragment(){
         })
     }
 
+    private fun isWifiConnected(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
+
+        return capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+    }
+
     private var downloadResultObserver: Observer<Response<ResponseBody>>? = null
     private var downloadInProgress = false
 
     private fun saveWallpaper(url: String, fileName: String){
-        if(downloadInProgress) return
+//        if(!viewModel.ifDownloadWithoutWifi && !isWifiConnected(requireContext())){
+//            Toast.makeText(requireContext(), "No wifi connection", Toast.LENGTH_SHORT).show()
+//            return
+//        }
+
+        if(downloadInProgress){
+            Toast.makeText(requireContext(), "Download in progress", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         downloadInProgress = true
         viewModel.downloadFile(url)
@@ -190,9 +220,49 @@ class FullscreenImageFragment: Fragment(){
 
 
     private fun loadUIRefPosition(){
+        binding.dimBackground.visibility = View.VISIBLE
         binding.imageName.text = listWall[position].name
         setFavorite()
-        Glide.with(this).load(listWall[position].url).into(binding.fullscreenImageView)
+        Glide.with(this)
+            .load(listWall[position].url)
+            .listener(object: RequestListener<Drawable>{
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable,
+                    model: Any,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    binding.dimBackground.apply {
+                        alpha = 1f
+                        animate().alpha(0f).setDuration(300).setListener(object: AnimatorListener {
+                            override fun onAnimationStart(p0: Animator) {}
+
+                            override fun onAnimationEnd(p0: Animator) {
+                                visibility = View.GONE
+                            }
+
+                            override fun onAnimationCancel(p0: Animator) {
+                                visibility = View.GONE
+                            }
+
+                            override fun onAnimationRepeat(p0: Animator) {}
+                        })
+                    }
+                    return false
+                }
+
+            })
+            .into(binding.fullscreenImageView)
     }
 
     private fun setFavorite(){

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ringtuneandwallpaper.R
 import com.example.ringtuneandwallpaper.model.RingtoneEntity
 import com.example.ringtuneandwallpaper.ui.view.RingToneFragmentDirections
+import com.example.ringtuneandwallpaper.utility.navigateBack
 
 class RingtoneAdapter(
     private val dataset: List<RingtoneEntity>,
@@ -30,11 +31,11 @@ class RingtoneAdapter(
     }
 
     override fun onBindViewHolder(holder: RingtoneViewHolder, position: Int) {
-        holder.ringtoneNameView.text = dataset[position].name
-        holder.ringtoneTimeView.text = "3:50"
+        holder.ringtoneNameView.text = dataset[position].name.replace("_"," ")
+        holder.ringtoneTimeView.text = dataset[position].duration.toString()
         holder.ringtoneNameView.setOnClickListener {
             val action = RingToneFragmentDirections.actionRingTuneFragmentToPlayerMusicFragment(dataset.toTypedArray(), position)
-            navController.navigate(action)
+            navController.navigateBack(action)
         }
     }
 }

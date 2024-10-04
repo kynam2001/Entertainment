@@ -10,6 +10,7 @@
     <ImageButton
         android:id="@+id/back_button"
         style="@style/BackButtonStyle"
+        android:background="@drawable/button_clicked_setting"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <TextView
@@ -29,6 +30,7 @@
         android:layout_height="48dp"
         android:src="@drawable/baseline_power_settings_new_24"
         android:contentDescription="quit button"
+        android:background="@drawable/button_clicked_setting"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 

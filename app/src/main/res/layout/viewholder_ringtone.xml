@@ -8,19 +8,19 @@
     <TextView
         android:id="@+id/ringtoneName"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_weight="0.85"
         android:textColor="#000000"
-        android:textSize="16sp"
+        android:textSize="24sp"
         android:ellipsize="end"
         android:maxLines="1"/>
 
     <TextView
         android:id="@+id/ringtoneTime"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_weight="0.15"
         android:textColor="#000000"
-        android:textSize="16sp"/>
+        android:textSize="24sp"/>
 
 </LinearLayout>

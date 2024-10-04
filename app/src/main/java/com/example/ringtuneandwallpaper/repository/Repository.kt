@@ -62,6 +62,7 @@ class Repository @Inject constructor(
         return RingtoneEntity(
             name = name,
             url = url,
+            duration = duration,
             isFavorite = false,
             isDownloaded = false
         )
@@ -72,6 +73,8 @@ class Repository @Inject constructor(
         return WallpaperEntity(
             name = name,
             url = url,
+            location = location,
+            dimension = dimension,
             isFavorite = false,
             isDownloaded = false
         )

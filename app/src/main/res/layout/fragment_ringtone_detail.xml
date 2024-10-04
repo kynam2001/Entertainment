@@ -11,7 +11,7 @@
     <ImageButton
         android:id="@+id/back_button"
         style="@style/BackButtonStyle"
-        android:background="#889ADC"
+        android:background="@drawable/button_clicked_ringtone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 

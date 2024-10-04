@@ -1,15 +1,11 @@
 package com.example.ringtuneandwallpaper.ui.view
 
-import android.app.AlarmManager
 import android.content.ContentUris
 import android.content.ContentValues
-import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.provider.AlarmClock
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,7 +17,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.ringtuneandwallpaper.databinding.FragmentRingtoneDetailBinding
-import java.io.File
+import com.example.ringtuneandwallpaper.utility.navigateBack
+import com.example.ringtuneandwallpaper.utility.navigateForward
 
 @RequiresApi(Build.VERSION_CODES.Q)
 class RingtoneDetailFragment: Fragment(){
@@ -46,9 +43,9 @@ class RingtoneDetailFragment: Fragment(){
         val listRing = args.listRing.toList()
         binding.backButton.setOnClickListener {
             val action = RingtoneDetailFragmentDirections.actionRingtoneDetailFragmentToPlayerMusicFragment(listRing.toTypedArray(), position)
-            findNavController().navigate(action)
+            findNavController().navigateForward(action)
         }
-        binding.ringtoneName.text = listRing[position].name
+        binding.ringtoneName.text = listRing[position].name.replace("_"," ")
         binding.setRingtoneButton.setOnClickListener {
             getFileUri(listRing[position].name)
         }

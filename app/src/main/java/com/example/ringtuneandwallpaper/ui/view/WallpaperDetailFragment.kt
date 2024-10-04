@@ -1,27 +1,19 @@
 package com.example.ringtuneandwallpaper.ui.view
 
-import android.annotation.SuppressLint
 import android.app.WallpaperManager
-import android.database.Cursor
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.ringtuneandwallpaper.databinding.FragmentWallpaperDetailBinding
+import com.example.ringtuneandwallpaper.utility.navigateBack
+import com.example.ringtuneandwallpaper.utility.navigateForward
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.IOException
 import java.net.URL
 
 class WallpaperDetailFragment: Fragment(){
@@ -46,9 +38,11 @@ class WallpaperDetailFragment: Fragment(){
         val listWall = args.listWall.toList()
         binding.backButton.setOnClickListener {
             val action = WallpaperDetailFragmentDirections.actionWallpaperDetailFragmentToFullscreenImageFragment(listWall.toTypedArray(), position)
-            findNavController().navigate(action)
+            findNavController().navigateBack(action)
         }
         binding.imageName.text = listWall[position].name
+        binding.size.text = "Size: ${listWall[position].dimension}"
+        binding.location.text = "Location: ${listWall[position].location}"
         binding.setWallpaperButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 val inputStream = URL(listWall[position].url).openStream()

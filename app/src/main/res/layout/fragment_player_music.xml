@@ -10,7 +10,7 @@
     <ImageButton
         android:id="@+id/back_button"
         style="@style/BackButtonStyle"
-        android:background="#889ADC"
+        android:background="@drawable/button_clicked_ringtone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -28,9 +28,20 @@
     <ImageButton
         android:id="@+id/detail_button"
         style="@style/DetailButtonStyle"
-        android:background="#889ADC"
+        android:background="@drawable/button_clicked_ringtone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/diskIcon"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginBottom="40dp"
+        android:src="@drawable/disk_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/seekBar"/>
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontal_guideline"
@@ -80,24 +91,14 @@
     <ImageButton
         android:id="@+id/favorite_button"
         style="@style/FavoriteTabButtonStyle"
-        android:background="#889ADC"
+        android:background="@drawable/button_clicked_ringtone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <ImageView
-        android:id="@+id/diskIcon"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginBottom="40dp"
-        android:src="@drawable/disk_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/seekBar"/>
 
     <Button
         android:id="@+id/downloadButton"
         style="@style/DownloadButtonStyle"
-        android:background="#889ADC"
+        android:background="@drawable/button_clicked_ringtone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
