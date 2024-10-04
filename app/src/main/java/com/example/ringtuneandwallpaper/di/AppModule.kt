@@ -1,6 +1,7 @@
 package com.example.ringtuneandwallpaper.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.example.ringtuneandwallpaper.dao.RingtoneDataAccessObject
 import com.example.ringtuneandwallpaper.dao.WallpaperDataAccessObject
@@ -47,6 +48,14 @@ object AppModule {
             WallpaperDatabase::class.java,
             "wallpapers"
         ).fallbackToDestructiveMigration().build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(
+        @ApplicationContext context: Context
+    ): SharedPreferences {
+        return context.getSharedPreferences("app_settings", Context.MODE_PRIVATE)
     }
 
 }

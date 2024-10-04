@@ -3,7 +3,10 @@ package com.example.ringtuneandwallpaper.ui.view
 import android.Manifest
 import android.animation.ObjectAnimator
 import android.content.ContentValues
+import android.content.Context
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -137,6 +140,10 @@ class PlayerMusicFragment: Fragment() {
             }
             listRing[position].isDownloaded = true
             saveRingtone(listRing[position].url, listRing[position].name)
+            if(viewModel.getIfDownloadedAddToFavorite()){
+                listRing[position].isFavorite = true
+                setFavorite()
+            }
             lifecycleScope.launch {
                 viewModel.updateRingtones(listRing[position])
             }
@@ -198,10 +205,22 @@ class PlayerMusicFragment: Fragment() {
         }
     }
 
+    private fun isWifiConnected(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
+
+        return capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+    }
+
     private var downloadResultObserver: Observer<Response<ResponseBody>>? = null
     private var downloadInProgress = false
 
     private fun saveRingtone(url: String, fileName: String){
+        if(viewModel.getIfDownloadOnlyWifi() && !isWifiConnected(requireContext())){
+            Toast.makeText(requireContext(), "No wifi connection", Toast.LENGTH_SHORT).show()
+            return
+        }
         if(downloadInProgress) return
 
         downloadInProgress = true

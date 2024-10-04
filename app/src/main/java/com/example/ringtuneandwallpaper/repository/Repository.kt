@@ -1,6 +1,6 @@
 package com.example.ringtuneandwallpaper.repository
 
-import android.util.Log
+import android.content.SharedPreferences
 import com.example.ringtuneandwallpaper.dao.RingtoneDataAccessObject
 import com.example.ringtuneandwallpaper.dao.WallpaperDataAccessObject
 import com.example.ringtuneandwallpaper.model.RingtoneApi
@@ -16,7 +16,8 @@ import javax.inject.Inject
 class Repository @Inject constructor(
     private val api: ApiService,
     private val ringtoneDao: RingtoneDataAccessObject,
-    private val wallpaperDao: WallpaperDataAccessObject
+    private val wallpaperDao: WallpaperDataAccessObject,
+    private val sharedPreferences: SharedPreferences
 ) {
 
     suspend fun downloadFile(url: String): Response<ResponseBody> {
@@ -55,6 +56,27 @@ class Repository @Inject constructor(
     suspend fun updateWallpaper(wallpaper: WallpaperEntity) {
         wallpaperDao.updateWallpaper(wallpaper)
     }
+
+    fun setIfDownloadedAddToFavorite(value: Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("ifDownloadedAddToFavorite", value)
+        editor.apply()
+    }
+
+    fun getIfDownloadedAddToFavorite(): Boolean {
+        return sharedPreferences.getBoolean("ifDownloadedAddToFavorite", false)
+    }
+
+    fun setDownloadOnlyWifi(value: Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("ifDownloadOnlyWifi", value)
+        editor.apply()
+    }
+
+    fun getDownloadOnlyWifi(): Boolean {
+        return sharedPreferences.getBoolean("ifDownloadOnlyWifi", false)
+    }
+
 
 
     // Chuyển đổi RingtoneApi thành RingtoneEntity để lưu vào Room Database

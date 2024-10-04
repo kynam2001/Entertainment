@@ -104,10 +104,10 @@ class FullscreenImageFragment: Fragment(){
             }
             listWall[position].isDownloaded = true
             saveWallpaper(listWall[position].url, listWall[position].name)
-//            if(viewModel.ifDownloadedAddToFavorite){
-//                listWall[position].isFavorite = true
-//                setFavorite()
-//            }
+            if(viewModel.getIfDownloadedAddToFavorite()){
+                listWall[position].isFavorite = true
+                setFavorite()
+            }
             lifecycleScope.launch {
                 Log.e("Vigelos", "updated")
                 viewModel.updateWallpapers(listWall[position])
@@ -155,10 +155,10 @@ class FullscreenImageFragment: Fragment(){
     private var downloadInProgress = false
 
     private fun saveWallpaper(url: String, fileName: String){
-//        if(!viewModel.ifDownloadWithoutWifi && !isWifiConnected(requireContext())){
-//            Toast.makeText(requireContext(), "No wifi connection", Toast.LENGTH_SHORT).show()
-//            return
-//        }
+        if(viewModel.getIfDownloadOnlyWifi() && !isWifiConnected(requireContext())){
+            Toast.makeText(requireContext(), "No wifi connection", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         if(downloadInProgress){
             Toast.makeText(requireContext(), "Download in progress", Toast.LENGTH_SHORT).show()
@@ -173,7 +173,6 @@ class FullscreenImageFragment: Fragment(){
                 //Lưu tệp vào bộ nhớ
                 val inputStream: InputStream? = response.body()?.byteStream()
                 saveFileToDownloadFolder(inputStream, fileName)
-//                updateDatabase()
                 Log.e("Vigelos", "download success")
             } else {
                 Toast.makeText(requireContext(), "Download failed", Toast.LENGTH_SHORT).show()

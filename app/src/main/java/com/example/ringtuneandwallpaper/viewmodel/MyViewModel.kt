@@ -1,23 +1,13 @@
 package com.example.ringtuneandwallpaper.viewmodel
 
-import android.app.Application
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ringtuneandwallpaper.dao.RingtoneDataAccessObject
-import com.example.ringtuneandwallpaper.dao.WallpaperDataAccessObject
-import com.example.ringtuneandwallpaper.model.RingtoneApi
-import com.example.ringtuneandwallpaper.model.RingtoneDatabase
 import com.example.ringtuneandwallpaper.model.RingtoneEntity
-import com.example.ringtuneandwallpaper.model.WallpaperApi
-import com.example.ringtuneandwallpaper.model.WallpaperDatabase
 import com.example.ringtuneandwallpaper.model.WallpaperEntity
 import com.example.ringtuneandwallpaper.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -34,9 +24,6 @@ class MyViewModel @Inject constructor(
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
-
-    val ifDownloadedAddToFavorite = MutableLiveData<Boolean>()
-    val ifDownloadWithoutWifi = MutableLiveData<Boolean>()
 
     fun downloadFile(url: String) {
         viewModelScope.launch {
@@ -75,7 +62,22 @@ class MyViewModel @Inject constructor(
         viewModelScope.launch {
             repository.updateWallpaper(wallpaper)
         }
+    }
 
+    fun setIfDownloadedAddToFavorite(value: Boolean){
+        repository.setIfDownloadedAddToFavorite(value)
+    }
+
+    fun getIfDownloadedAddToFavorite(): Boolean{
+        return repository.getIfDownloadedAddToFavorite()
+    }
+
+    fun setIfDownloadOnlyWifi(value: Boolean){
+        repository.setDownloadOnlyWifi(value)
+    }
+
+    fun getIfDownloadOnlyWifi(): Boolean{
+        return repository.getDownloadOnlyWifi()
     }
 
 }

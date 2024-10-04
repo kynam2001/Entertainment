@@ -32,10 +32,16 @@ class RingtoneAdapter(
 
     override fun onBindViewHolder(holder: RingtoneViewHolder, position: Int) {
         holder.ringtoneNameView.text = dataset[position].name.replace("_"," ")
-        holder.ringtoneTimeView.text = dataset[position].duration.toString()
+        holder.ringtoneTimeView.text = formatSecondsToMinutes(dataset[position].duration)
         holder.ringtoneNameView.setOnClickListener {
             val action = RingToneFragmentDirections.actionRingTuneFragmentToPlayerMusicFragment(dataset.toTypedArray(), position)
             navController.navigateBack(action)
         }
+    }
+
+    private fun formatSecondsToMinutes(seconds: Int): String {
+        val minutes = seconds / 60
+        val remainingSeconds = seconds % 60
+        return String.format("%02d:%02d", minutes, remainingSeconds)
     }
 }

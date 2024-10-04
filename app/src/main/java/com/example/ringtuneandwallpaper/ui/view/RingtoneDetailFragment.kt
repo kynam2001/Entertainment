@@ -46,6 +46,7 @@ class RingtoneDetailFragment: Fragment(){
             findNavController().navigateForward(action)
         }
         binding.ringtoneName.text = listRing[position].name.replace("_"," ")
+        binding.duration.text = "Duration: ${formatSecondsToMinutes(listRing[position].duration)}"
         binding.setRingtoneButton.setOnClickListener {
             getFileUri(listRing[position].name)
         }
@@ -101,6 +102,12 @@ class RingtoneDetailFragment: Fragment(){
         } ?: run {
             Toast.makeText(requireContext(), "Di chuyển tệp thất bại", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun formatSecondsToMinutes(seconds: Int): String {
+        val minutes = seconds / 60
+        val remainingSeconds = seconds % 60
+        return String.format("%02d:%02d", minutes, remainingSeconds)
     }
 
 }

@@ -37,24 +37,14 @@ class SettingFragment: Fragment(){
         binding.quitButton.setOnClickListener {
             requireActivity().finish()
         }
-//        Log.e("Vigelos", "ifDownloadWithoutWifi: ${viewModel.ifDownloadWithoutWifi}")
-//        Log.e("Vigelos", "ifDownloadedAddToFavorite: ${viewModel.ifDownloadedAddToFavorite}")
-//        binding.switchWifi.isChecked = !viewModel.ifDownloadWithoutWifi
-//        binding.switchFavorite.isChecked = viewModel.ifDownloadedAddToFavorite
-//        binding.switchWifi.setOnCheckedChangeListener { _, isChecked ->
-//            when(isChecked){
-//                true -> viewModel.ifDownloadWithoutWifi = false
-//                false -> viewModel.ifDownloadWithoutWifi = true
-//            }
-//            Log.e("Vigelos", "ifDownloadWithoutWifi: ${viewModel.ifDownloadWithoutWifi}")
-//        }
-//        binding.switchFavorite.setOnCheckedChangeListener { _, isChecked ->
-//            when(isChecked){
-//                true -> viewModel.ifDownloadedAddToFavorite = true
-//                false -> viewModel.ifDownloadedAddToFavorite = false
-//            }
-//            Log.e("Vigelos", "ifDownloadedAddToFavorite: ${viewModel.ifDownloadedAddToFavorite}")
-//        }
+        binding.switchWifi.isChecked = viewModel.getIfDownloadOnlyWifi()
+        binding.switchFavorite.isChecked = viewModel.getIfDownloadedAddToFavorite()
+        binding.switchWifi.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setIfDownloadOnlyWifi(isChecked)
+        }
+        binding.switchFavorite.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setIfDownloadedAddToFavorite(isChecked)
+        }
     }
 
     override fun onDestroyView() {
